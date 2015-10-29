@@ -2,13 +2,14 @@
 #include "pqueue.c"
 #include "fuck.h"
 
+int clock = 0;
 
-void createEvent(timeStamp, type, process) {
-  // create a new Event
-  struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
-
+void createNewProcess(timeStamp, type, process) {
   // create a new Process
   struct Process* newProcess = (struct Process*)malloc(sizeof(struct Process));
+
+  // create a new Event
+  struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
 
   // know the average values, use those average values to make own values
   // set its values to the right things
@@ -16,7 +17,7 @@ void createEvent(timeStamp, type, process) {
 
   // set the event type
 
-  // an event needs to be created and added to the event queue based off of priority
+  // an event needs to be created and added to the event queue (PQ) based off of priority
   add(newEvent);
 }
 
@@ -60,7 +61,7 @@ void removeProcess(int type, Event event) {
 * Method to generate the random numbers for the process being created
 * 1 =
 * 2 =
-* 3 = 
+* 3 =
 */
 void generateRandomValues(int processType) {
 
