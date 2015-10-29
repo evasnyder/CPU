@@ -8,18 +8,55 @@
 //4. average interarrival time
 //5. average time required to se
 
+//struct for process type
+struct ProcessType {
+    char *process;
+    
+    int cpuTime, burstTime, interArrTime, IOTime;
+};
+
+//main method
 int main(int argc, char **argv) {
     
-    FILE *f = fopen(arg[1], "r")
     
-    char buff[SIZE];
+//    int counter = 0;
+//
+//    FILE *fp = fopen(argv[1], "r");
+//    
+//    char buff[1000];
+//    //buff = malloc(sizeof(char*) * counter);
+//    
+//    
+//    
+//    fscanf(fp, buff);
+//
+//    printf("%s\n", &buff[2]);
+//
+//
+//    fclose(fp);
     
-    while(fgets(buff, BUFSIZE - 1, fp) != NULL)
+    //read hardcoded string
+    char buf[] = "2 interactive 20 10 80 5 batch 500 250 1000 10";
+    int i;
+    char *p;
+    char *array[100];
+    i = 0;
+    p = strtok (buf," ");
+    while (p != NULL)
     {
-        /* buff has one line of the file, do with it what you will... */
-        
-        printf ("%s\n", buff); /* ...such as show it on the screen */
+        array[i++] = p;
+        p = strtok (NULL, " ");
     }
-    fclose(fp); 
+    for (i=0;i<15; ++i)
+        printf("%s\n", array[i]);
     
 }
+
+
+
+//initialize event queue
+//while loop, until sim over, tke next event from pq
+//take command line input (use getlong function)
+//evet Q: PQ, time stamp:
+//ready queue: queue depends on algorithm
+//
