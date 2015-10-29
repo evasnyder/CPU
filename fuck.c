@@ -1,6 +1,7 @@
 #include "queue.c"
 #include "pqueue.c"
 #include "fuck.h"
+#include "distribution.c"
 
 int clock = 0;
 
@@ -63,6 +64,41 @@ void removeProcess(int type, Event event) {
 * 2 =
 * 3 =
 */
-void generateRandomValues(int processType) {
+Process generateRandomValues(int processType, Process process) {
 
+  switch(processType){
+    // first process type
+    case 1:
+      // calculte CPU service time
+      // process -> cpu_service_time =
+      // calculate burst time
+
+      // calculate interarrival time
+
+      // calculate IO service time
+      return process;
+      break;
+
+    case 2:
+      // calculte CPU service time
+
+      // calculate burst time
+
+      // calculate interarrival time
+
+      // calculate IO service time
+      return process;
+      break;
+
+    case 3:
+      // calculte CPU service time
+
+      // calculate burst time
+
+      // calculate interarrival time
+
+      // calculate IO service time
+      return process;
+      break;
+  }
 }
