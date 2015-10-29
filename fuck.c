@@ -5,7 +5,7 @@
 
 int clock_time = 0;
 
-// event queue is the to do list 
+// event queue is the to do list
 
 // pass processes?
 void runCPU(int runtime, int numCPUS, int contextSwitch, int Quantum) {
@@ -17,9 +17,36 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int Quantum) {
   while (clock_time <= runtime) {
     // if there are events in the queue...
       // DEQUEUE an event from the event queue
+      Event event = removeNode();
 
       // UPDATE clock to the priority of the dequeued event
+      clock = event -> timeStamp;
 
+      if(event -> type == 1) {
+        // create a new process
+        createNewProcess(clock_time);
+
+      } else if (event -> type == 2) {
+        // go to ready queue
+
+      } else if (event -> type == 3) {
+        // go to CPU
+
+      } else if (event -> type == 4) {
+        // terminate a process
+
+      } else if (event -> type == 5) {
+        // go to IO
+
+      } else if (event -> type == 6) {
+        // quantum expire
+
+      } else if (event -> type == 7) {
+        // return from IO
+
+      } else {
+        return;
+      }
       // CHECK to see if there are any new processes that should be added (i.e interarrival time)
         // call create process
 
@@ -58,7 +85,7 @@ Struct[] initializeCPUS(int num) {
   return cpu;
 }
 
-void createNewProcess(timeStamp, type) {
+Event createNewProcess(timeStamp) {
   // create a new Process
   struct Process* newProcess = (struct Process*)malloc(sizeof(struct Process));
 
@@ -69,11 +96,21 @@ void createNewProcess(timeStamp, type) {
   // set its values to the right things
     // io service, interarrival, burst, cpu service
 
-  // set the event type
-  newProcess -> type = type;
+  // set the event type - GO TO READY QUEUE
+  newEvent -> type = 2;
+  newEvent -> timeStamp = clock_time;
+  return newEvent;
+}
 
-  // an event needs to be created and added to the event queue (PQ) based off of priority
-  add(newEvent);
+void goToReadyQueue(Event event, int contextSwitch) {
+  struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
+  newEvent -> process = event -> process;
+
+  
+
+  enqueue(newEvent);
+  // next step is to go to the CPU i.e add the context switch time
+
 }
 
 void removeProcess(int type, Event event) {

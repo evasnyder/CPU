@@ -3,11 +3,13 @@ struct Event {
   int timeStamp;
   int type;
     // create a process of x type == 1
+    // go to ready queue = 2
+    // go to CPU = 3
     // remove a process
-      // terminate == 2
-      // go to IO == 3
-      // quantum expire == 4
-    // return from IO == 5
+      // terminate == 4
+      // go to IO == 5
+      // quantum expire == 6
+    // return from IO == 7
   struct Process *process;
 };
 
