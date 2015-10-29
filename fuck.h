@@ -31,6 +31,12 @@ struct Process {
   int cpu_service_time_remaining;
 };
 
+struct CPU {
+  // 0 = idle
+  // 1 = busy
+  int idle = 0;
+};
+
 
 void createEvent(timeStamp, type, process);
 
