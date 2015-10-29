@@ -13,24 +13,32 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int Quantum) {
 
   // while there is still runtime left in the CPU
   while (runtime >= 0) {
-    // dequeue an event from the event queue
-    // update clock to the priority of the dequeued event
-    // check to see if there are any new processes that should be added (i.e interarrival time)
-    // execute the event type of the event
+    // DEQUEUE an event from the event queue
 
-      // if the event type is create -> move to the ready queue
-      // move from the ready queue to the CPU if there are idle CPUS
+    // UPDATE clock to the priority of the dequeued event
+
+    // CHECK to see if there are any new processes that should be added (i.e interarrival time)
+
+    // EXECUTE the event type of the event
+
+      // IF the event type is create -> move to the ready queue
+
+      // MOVE from the ready queue to the CPU if there are idle CPUS
+
       // ROUND ROBIN ALGORITHM TO MOVE FROM READY QUEUE TO CPU
-      // add context switch amount onto the quantum for the process
 
-        // check to see if any of the events on the CPU should be removed - CALL REMOVE PROCESS
+      // ADD context switch amount onto the quantum for the process
+
+        // CHECK to see if any of the events on the CPU should be removed - CALL REMOVE PROCESS
 
           // terminate: free memory + update statistics
             // if CPU > clock time
+
           // IO: generate an event to go back to the ready queue
             // if burst < quantum
+
           // Quantum Expires: go back to ready queue
-            // if CPU > burst > quantum 
+            // if CPU > burst > quantum
   }
 }
 
@@ -40,7 +48,6 @@ Struct[] initializeCPUS(int num) {
   for (i = 0; i < num; i++) {
     cpu[i] = (struct CPU*)malloc(sizeof(struct CPU));
   }
-
   return cpu;
 }
 
