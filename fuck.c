@@ -18,6 +18,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int Quantum) {
     // UPDATE clock to the priority of the dequeued event
 
     // CHECK to see if there are any new processes that should be added (i.e interarrival time)
+      // call create process 
 
     // EXECUTE the event type of the event
 
