@@ -8,11 +8,11 @@ int clock = 0;
 void runCPU(int runtime) {
   // while there is still runtime left in the CPU
   while (runtime >= 0) {
-    // dequeue from the PQ and do whatever its task is 
+    // dequeue from the PQ and do whatever its task is
   }
 }
 
-void createNewProcess(timeStamp, type, process) {
+void createNewProcess(timeStamp, type) {
   // create a new Process
   struct Process* newProcess = (struct Process*)malloc(sizeof(struct Process));
 
@@ -24,6 +24,7 @@ void createNewProcess(timeStamp, type, process) {
     // io service, interarrival, burst, cpu service
 
   // set the event type
+  newProcess -> type = type;
 
   // an event needs to be created and added to the event queue (PQ) based off of priority
   add(newEvent);
