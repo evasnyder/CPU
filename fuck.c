@@ -5,7 +5,13 @@
 
 int clock = 0;
 
-void runCPU(int runtime) {
+void runCPU(int runtime, int numCPUS) {
+  int i;
+  int 
+  for(i = 0; i < numCPUS; i++) {
+
+  }
+
   // while there is still runtime left in the CPU
   while (runtime >= 0) {
     // dequeue from the PQ and do whatever its task is
