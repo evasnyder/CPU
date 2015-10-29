@@ -20,7 +20,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int Quantum) {
       Event event = removeNode();
 
       // UPDATE clock to the priority of the dequeued event
-      clock = event -> timeStamp;
+      clock_time = event -> timeStamp;
 
       if(event -> type == 1) {
         // create a new process
@@ -28,6 +28,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int Quantum) {
 
       } else if (event -> type == 2) {
         // go to ready queue
+        goToReadyQueue(event, clock_time);
 
       } else if (event -> type == 3) {
         // go to CPU
@@ -85,16 +86,17 @@ Struct[] initializeCPUS(int num) {
   return cpu;
 }
 
-Event createNewProcess(timeStamp) {
+Event createNewProcess(Event event, int timeStamp) {
   // create a new Process
   struct Process* newProcess = (struct Process*)malloc(sizeof(struct Process));
-
   // create a new Event
   struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
 
   // know the average values, use those average values to make own values
   // set its values to the right things
     // io service, interarrival, burst, cpu service
+
+  free(event);
 
   // set the event type - GO TO READY QUEUE
   newEvent -> type = 2;
@@ -105,11 +107,27 @@ Event createNewProcess(timeStamp) {
 void goToReadyQueue(Event event, int contextSwitch) {
   struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
   newEvent -> process = event -> process;
+  free(event);
 
-
+  // next step is to go to the CPU i.e add the context switch time to the clock time
+  // CALCUALTE TIME STAMP FOR ALGORITHM HERE ?????
+  newEvent -> type = 3;
+  newEvent -> timeStamp = clock_time + contextSwitch;
 
   enqueue(newEvent);
-  // next step is to go to the CPU i.e add the context switch time
+}
+
+void goToCPU(Event event, int clock_time) {
+  struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
+  newEvent -> process = event -> process;
+  free(event);
+
+  // if it is on the CPU you need to then see if you need to remove it.....
+  // calculations need to be done to see what remove should be completed
+
+  // check to see if the process on the CPU should be terminated next
+  // check to see if the process on the CPU should go to IO
+  // check to see if the process on the CPU quantum expires
 
 }
 
