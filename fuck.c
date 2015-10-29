@@ -5,6 +5,13 @@
 
 int clock = 0;
 
+void runCPU(int runtime) {
+  // while there is still runtime left in the CPU
+  while (runtime >= 0) {
+    // dequeue from the PQ and do whatever its task is 
+  }
+}
+
 void createNewProcess(timeStamp, type, process) {
   // create a new Process
   struct Process* newProcess = (struct Process*)malloc(sizeof(struct Process));
@@ -23,6 +30,8 @@ void createNewProcess(timeStamp, type, process) {
 }
 
 void removeProcess(int type, Event event) {
+  // clock is equal to the time stamp (i.e priority) from the process being removed
+  // from the event queue
   switch(type) {
     // terminate
     case 2:
