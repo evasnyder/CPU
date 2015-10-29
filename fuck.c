@@ -5,6 +5,8 @@
 
 int clock_time = 0;
 
+// event queue is the to do list 
+
 // pass processes?
 void runCPU(int runtime, int numCPUS, int contextSwitch, int Quantum) {
 
@@ -13,33 +15,37 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int Quantum) {
 
   // while there is still runtime left in the CPU
   while (clock_time <= runtime) {
-    // DEQUEUE an event from the event queue
+    // if there are events in the queue...
+      // DEQUEUE an event from the event queue
 
-    // UPDATE clock to the priority of the dequeued event
+      // UPDATE clock to the priority of the dequeued event
 
-    // CHECK to see if there are any new processes that should be added (i.e interarrival time)
-      // call create process 
+      // CHECK to see if there are any new processes that should be added (i.e interarrival time)
+        // call create process
 
-    // EXECUTE the event type of the event
+        // EXECUTE the event type of the event
 
-      // IF the event type is create -> move to the ready queue
+        // IF the event type is create -> move to the ready queue
 
-      // MOVE from the ready queue to the CPU if there are idle CPUS
+        // FOR loop through the CPUs and if they're idle, have a process go on to it...
+          // ?? HOW DOES A PROCESS GO ON TO A CPU IN CODE ??
 
-      // ROUND ROBIN ALGORITHM TO MOVE FROM READY QUEUE TO CPU
+        // MOVE from the ready queue to the CPU if there are idle CPUS
 
-      // ADD context switch amount onto the quantum for the process
+        // ROUND ROBIN ALGORITHM TO MOVE FROM READY QUEUE TO CPU
 
-        // CHECK to see if any of the events on the CPU should be removed - CALL REMOVE PROCESS
+        // ADD context switch amount onto the quantum for the process
 
-          // terminate: free memory + update statistics
-            // if CPU > clock time
+          // CHECK to see if any of the events on the CPU should be removed - CALL REMOVE PROCESS
 
-          // IO: generate an event to go back to the ready queue
-            // if burst < quantum
+            // terminate: free memory + update statistics
+              // if CPU > clock time
 
-          // Quantum Expires: go back to ready queue
-            // if CPU > burst > quantum
+              // IO: generate an event to go back to the ready queue
+              // if burst < quantum
+
+              // Quantum Expires: go back to ready queue
+              // if CPU > burst > quantum
   }
 }
 
