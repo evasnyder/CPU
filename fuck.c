@@ -3,7 +3,7 @@
 #include "fuck.h"
 #include "distribution.c"
 
-int clock = 0;
+int clock_time = 0;
 
 // pass processes?
 void runCPU(int runtime, int numCPUS, int contextSwitch, int Quantum) {
@@ -12,7 +12,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int Quantum) {
   Struct CPU cpu = initializeCPUS(numCPUS);
 
   // while there is still runtime left in the CPU
-  while (runtime >= 0) {
+  while (clock_time <= runtime) {
     // DEQUEUE an event from the event queue
 
     // UPDATE clock to the priority of the dequeued event
