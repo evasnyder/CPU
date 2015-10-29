@@ -9,7 +9,7 @@ struct Event {
       // quantum expire == 4
     // return from IO == 5
   struct Process *process;
-}
+};
 
 struct Process {
   // how long I'm stuck in the IO
@@ -29,7 +29,7 @@ struct Process {
 
   // how much cpu service time there is left for the process
   int cpu_service_time_remaining;
-}
+};
 
 
 void createEvent(timeStamp, type, process);
