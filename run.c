@@ -1,6 +1,6 @@
 #include "queue.c"
 #include "pqueue.c"
-#include "fuck.h"
+#include "run.h"
 #include "distribution.c"
 
 int clock_time = 0;
@@ -106,7 +106,7 @@ void goToReadyQueue(Event event, int contextSwitch) {
   struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
   newEvent -> process = event -> process;
 
-  
+
 
   enqueue(newEvent);
   // next step is to go to the CPU i.e add the context switch time
