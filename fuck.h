@@ -35,3 +35,5 @@ struct Process {
 void createEvent(timeStamp, type, process);
 
 void removeProcess();
+
+void generateRandomValues();
