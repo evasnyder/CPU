@@ -61,6 +61,13 @@ struct Statistics {
   int num_ready_queue_changed;
 };
 
+struct batch {
+  int cpuTime, burstTime, interArrTime, IOTime;
+};
+struct interactive {
+  int cpuTime, burstTime, interArrTime, IOTime;
+};
+
 void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum);
 
 void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats, int proess_type);

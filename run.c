@@ -206,13 +206,18 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
 }
 
 //method to save processes data from the input file
-
+void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArrival, int avgIO) {
+  switch (process_type) {
+    case 1:
+      // batch
+      
+  }
+}
 
 /**
 * Method to generate the random numbers for the process being created
 * 1 =
 * 2 =
-* 3 =
 */
 struct Process generateRandomValues(int processType, struct Process *process) {
 
