@@ -186,6 +186,9 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
 
 }
 
+//method to save processes data from the input file
+
+
 /**
 * Method to generate the random numbers for the process being created
 * 1 =
