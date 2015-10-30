@@ -12,7 +12,7 @@ void enqueue (int value);
 
 void dequeue();
 
-int peek();
+//int peek();
 
 int isEmpty();
 
