@@ -25,7 +25,7 @@ void add(struct Event* newEvent)
 	temp1->timeStamp = eventPriority;
 
 	//if the Queue is empty of if the element that is being inserted has a higher priority
-	if (isEmpty() || eventPriority < head->timeStamp)
+	if (isEmptyPQ() || eventPriority < head->timeStamp)
 	{
 		temp1->next = head;
 		head = temp1;
@@ -61,7 +61,7 @@ int delete()
 	struct Event* temp;
 	int event;
 
-	if (isEmpty())
+	if (isEmptyPQ())
 	{
 		return 0;
 	}
@@ -88,7 +88,7 @@ int sizePQ()
 }
 
 //check to see whether a Queue is empty or not by returning 1 if it is and 0 if it isn't
-int isEmpty()
+int isEmptyPQ()
 {
 	if (head == NULL)
 		return 1;
@@ -98,11 +98,11 @@ int isEmpty()
 
 //to print the Queue, first check whether it's empty. If it isn't, then traverse through the Queue and print out each
 //Node's data and priority in the Queue
-void printQueue() {
+void printPQ() {
 	struct Event* temp;
 	temp = head;
 
-	if (isEmpty())
+	if (isEmptyPQ())
 	{
 		return;
 	}

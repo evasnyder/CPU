@@ -6,7 +6,7 @@ void add(struct Event* newEvent);
 int sizePQ();
 int getFirst();
 int delete();
-int isEmpty();
-void printQueue();
+int isEmptyPQ();
+void printPQ();
 
 #endif

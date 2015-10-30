@@ -93,7 +93,7 @@ int sizeQ() {
 /**
 * Method that prints out the queue
 **/
-void printQueue() {
+void printQ() {
 	struct Event* newHead = QUEUE_HEAD;
 	printf("Your Queue: ");
 	while(newHead != NULL) {
@@ -106,7 +106,7 @@ void printQueue() {
 /**
 * Method to check and see if the queue is empty
 **/
-int isEmpty() {
+int isEmptyQueue() {
 	if(QUEUE_HEAD == NULL && QUEUE_TAIL == NULL) {
 		return 1;
 	} else {

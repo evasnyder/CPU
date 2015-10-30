@@ -5,15 +5,12 @@
 
 int clock_time = 0;
 
-// event queue is the to do list
-
-// pass processes?
 void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
-    struct Statistics* stats = (struct Statistics*)malloc(sizeof(struct Statistics));
+  struct Statistics* stats = (struct Statistics*)malloc(sizeof(struct Statistics));
 
   // create an array of structs for the CPUS
-  Struct CPU cpu_array = initializeCPUS(numCPUS);
+  struct CPU cpu_array = initializeCPUS(numCPUS);
 
   // while there is still runtime left in the CPU
   while (clock_time <= runtime) {
@@ -44,8 +41,8 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
 }
 
-Struct[] initializeCPUS(int num) {
-  Struct CPU cpu [num];
+struct[] initializeCPUS(int num) {
+  struct CPU cpu [num];
   int i;
   for (i = 0; i < num; i++) {
     cpu[i] = (struct CPU*)malloc(sizeof(struct CPU));
@@ -53,7 +50,7 @@ Struct[] initializeCPUS(int num) {
   return cpu;
 }
 
-void createNewProcess(Event event, int timeStamp, Struct stats) {
+void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats) {
   // create a new Process
   struct Process* newProcess = (struct Process*)malloc(sizeof(struct Process));
   // create a new Event
@@ -76,7 +73,7 @@ void createNewProcess(Event event, int timeStamp, Struct stats) {
   stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 }
 
-void schedulingDecision(Event event, int contextSwitch, Struct CPUs, int numCPUs, int quantum) {
+void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs, int numCPUs, int quantum) {
   // add the new event to the ready queue
   enqueue(event);
 
@@ -131,7 +128,7 @@ void schedulingDecision(Event event, int contextSwitch, Struct CPUs, int numCPUs
   }
 }
 
-void removeProcess(int type, Event event, Struct CPUs, int contextSwitch) {
+void removeProcess(int type, Event event, struct CPU *CPUs, int contextSwitch) {
   // clock is equal to the time stamp (i.e priority) from the process being removed
   // from the event queue
   switch(type) {
@@ -190,7 +187,7 @@ void removeProcess(int type, Event event, Struct CPUs, int contextSwitch) {
 * 2 =
 * 3 =
 */
-Process generateRandomValues(int processType, Process process) {
+Process generateRandomValues(int processType, struct Process *process) {
 
   switch(processType){
     // first process type

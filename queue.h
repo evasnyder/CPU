@@ -11,9 +11,9 @@ void dequeue();
 
 int sizeQ();
 
-void printQueue();
+void printQ();
 
-int isEmpty();
+int isEmptyQueue();
 
 void clearQueue();
 
