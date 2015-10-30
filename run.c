@@ -1,10 +1,12 @@
 #include "queue.h"
 #include "pqueue.h"
 #include "run.h"
+#include "distribution.h"
+#include <stdlib.h>
 
 int clock_time = 0;
-struct batch* avgBatch;
-struct interactive* avgInteractive;
+struct batch* avgBatchValues;
+struct interactive* avgInteractiveValues;
 
 int main() {
 
@@ -209,23 +211,23 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
 
 //method to save processes data from the input file
 void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArrival, int avgIO) {
-  avgBatch = (struct batch*)malloc(sizeof(struct batch));
-  avgInteractive = (struct interactive*)malloc(sizeof(struct interactive));
+  avgBatchValues = (struct batch*)malloc(sizeof(struct batch));
+  avgInteractiveValues = (struct interactive*)malloc(sizeof(struct interactive));
 
   switch (process_type) {
     case 1:
       // batch
-      avgBatch -> cpuTime = avgCPU;
-      avgBatch -> burstTime = avgBurst;
-      avgBatch -> interArrTime = avgInterArrival;
-      avgBatch -> IOTime = avgIO;
+      avgBatchValues -> cpuTime = avgCPU;
+      avgBatchValues -> burstTime = avgBurst;
+      avgBatchValues -> interArrTime = avgInterArrival;
+      avgBatchValues -> IOTime = avgIO;
       break;
     case 2:
       // interactive
-      avgInteractive -> cpuTime = avgCPU;
-      avgInteractive -> burstTime = avgBurst;
-      avgInteractive -> interArrTime = avgInterArrival;
-      avgInteractive -> IOTime = avgIO;
+      avgInteractiveValues -> cpuTime = avgCPU;
+      avgInteractiveValues -> burstTime = avgBurst;
+      avgInteractiveValues -> interArrTime = avgInterArrival;
+      avgInteractiveValues -> IOTime = avgIO;
       break;
   }
 }
@@ -238,37 +240,30 @@ void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArriva
 struct Process generateRandomValues(int processType, struct Process *process) {
 
   switch(processType){
-    // first process type
+    // batch
     case 1:
       // calculte CPU service time
-      // process -> cpu_service_time = exponential_distribution
+      process -> cpu_service_time = *exponential_distribution((avgBatchValues -> cpuTime));
       // calculate burst time
-
+      process -> burst_time = *exponential_distribution((avgBatchValues -> burstTime));
       // calculate interarrival time
-
+      process -> interarrival_time = *exponential_distribution((avgBatchValues -> interArrTime));
       // calculate IO service time
+      process -> IO_Service = *exponential_distribution((avgBatchValues -> IOTime));
+
       return *process;
       break;
 
+    // interactive
     case 2:
       // calculte CPU service time
-
+      process -> cpu_service_time = *exponential_distribution((avgInteractiveValues -> cpuTime));
       // calculate burst time
-
+      process -> burst_time = *exponential_distribution((avgInteractiveValues -> burstTime));
       // calculate interarrival time
-
+      process -> interarrival_time = *exponential_distribution((avgInteractiveValues -> interArrTime));
       // calculate IO service time
-      return *process;
-      break;
-
-    case 3:
-      // calculte CPU service time
-
-      // calculate burst time
-
-      // calculate interarrival time
-
-      // calculate IO service time
+      process -> IO_Service = *exponential_distribution((avgInteractiveValues -> IOTime));
       return *process;
       break;
   }

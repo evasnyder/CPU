@@ -17,22 +17,22 @@ int* exponential_distribution(int mean){
 	return &num;
 }
 
-int main(void){
-	srand(time(NULL)); /* MUST INCLUDE THIS once FOR THE FUNCTIONS TO WORK PROPERLY */
-	int i;
-	int size = 20;
-
-	int* uniform = uniform_distribution(1,10);
-	int* exponential = exponential_distribution(5);
-
-	printf("Uniform\n");
-	for(i = 0; i < size; i++)
-		printf("%d ", uniform[i]);
-
-	printf("\n\nExponential\n");
-	for(i = 0; i < size; i++)
-		printf("%d ", exponential[i]);
-
-	printf("\n");
-	return 0;
-}
+// int main(void){
+// 	srand(time(NULL)); /* MUST INCLUDE THIS once FOR THE FUNCTIONS TO WORK PROPERLY */
+// 	int i;
+// 	int size = 20;
+//
+// 	int* uniform = uniform_distribution(1,10);
+// 	int* exponential = exponential_distribution(5);
+//
+// 	printf("Uniform\n");
+// 	for(i = 0; i < size; i++)
+// 		printf("%d ", uniform[i]);
+//
+// 	printf("\n\nExponential\n");
+// 	for(i = 0; i < size; i++)
+// 		printf("%d ", exponential[i]);
+//
+// 	printf("\n");
+// 	return 0;
+// }
