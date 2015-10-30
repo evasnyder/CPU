@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 
 struct Event {
@@ -69,3 +70,4 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
 void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextSwitch);
 
 struct Process generateRandomValues(int processType, struct Process *process);
+

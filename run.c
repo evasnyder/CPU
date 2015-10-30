@@ -1,5 +1,5 @@
-#include "queue.c"
-#include "pqueue.c"
+#include "queue.h"
+#include "pqueue.h"
 #include "run.h"
 #include "distribution.c"
 
@@ -10,7 +10,15 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   struct Statistics* stats = (struct Statistics*)malloc(sizeof(struct Statistics));
 
   // create an array of structs for the CPUS
-  struct CPU[] cpu_array = initializeCPUS(numCPUS);
+  struct CPU cpu_array[numCPUS];
+
+  int i;
+  for ( i = 0; i < 10; ++i)
+  {
+     cpu_array[i] = initializeCPUS(numCPUS);
+     printf( "r[%d] = %d\n", i, cpu_array[i]);
+
+  }
 
   // while there is still runtime left in the CPU
   while (clock_time <= runtime) {
@@ -41,12 +49,11 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
 }
 
-struct CPU[] initializeCPUS(int num) {
-  struct CPU cpu [num];
-  int i;
-  for (i = 0; i < num; i++) {
-    cpu[i] = *(struct CPU*)malloc(sizeof(struct CPU));
-  }
+//one cannot return array in C, only a pointer to the array
+struct initializeCPUS(int num) {
+  struct CPU cpu;
+  cpu = *(struct CPU*)malloc(sizeof(struct CPU));
+  cpu -> idle = 0;
   return cpu;
 }
 
