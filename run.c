@@ -16,7 +16,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   while (clock_time <= runtime) {
     // if there are events in the queue...
       // DEQUEUE an event from the event queue
-      Event event = removeNode();
+      struct Event *event = removeNode();
 
       // UPDATE clock to the priority of the dequeued event
       clock_time = event -> timeStamp;
@@ -36,8 +36,8 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   stats -> len_simulation_time = runtime;
   stats -> final_len_event_queue = sizePQ();
   stats -> final_len_ready_queue = sizeQ();
-  stats -> avg_len_event_queue = total_event_queue_lengths / num_event_queue_changed;
-  stats -> avg_len_ready_queue = total_ready_queue_lengths / num_ready_queue_changed;
+  stats -> avg_len_event_queue = (stats -> total_event_queue_lengths) / (stats -> num_event_queue_changed);
+  stats -> avg_len_ready_queue = (stats -> total_ready_queue_lengths) / (stats -> num_ready_queue_changed);
 
 }
 

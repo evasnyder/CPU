@@ -8,13 +8,13 @@ int* uniform_distribution(int min, int max) {
   int range = max - min + 1;
 	int r_scaled = (r * range) + min;
 
-	return r_scaled;
+	return &r_scaled;
 }
 
 int* exponential_distribution(int mean){
 	double r = rand()/(1.0 + RAND_MAX);
 	int num = -mean*log(r) + 1;
-	return num;
+	return &num;
 }
 
 int main(void){

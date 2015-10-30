@@ -7,8 +7,6 @@ void enqueue(struct Event *newEvent);
 
 void dequeue();
 
-//int peek();
-
 int sizeQ();
 
 void printQ();
