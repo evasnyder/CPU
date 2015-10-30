@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "PriorityQueue.h"
+#include "pqueue.h"
 #include "run.h"
 
 //declare the head Node of the Queue and set it to null
@@ -63,7 +63,7 @@ int delete()
 		return 0;
 	}
 
-	else 
+	else
 	{
 		temp = head;
 		event = temp->type;
@@ -104,4 +104,3 @@ void printQueue() {
 		}
 	}
 }
-
