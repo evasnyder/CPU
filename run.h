@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 
 struct Event {
@@ -13,6 +12,7 @@ struct Event {
       // quantum expire == 6
     // return from IO == 7
   struct Process *process;
+
 };
 
 struct Process {

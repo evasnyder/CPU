@@ -1,9 +1,15 @@
 #include "queue.h"
 #include "pqueue.h"
 #include "run.h"
-#include "distribution.c"
 
 int clock_time = 0;
+//one cannot return array in C, only a pointer to the array
+void initializeCPUS(struct CPU *cpu) {
+  //struct CPU cpu;
+  cpu = (struct CPU*)malloc(sizeof(struct CPU));
+  cpu -> idle = 0;
+  //return cpu;
+}
 
 void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
@@ -15,7 +21,9 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   int i;
   for ( i = 0; i < 10; ++i)
   {
-     cpu_array[i] = initializeCPUS(numCPUS);
+     //cpu_array[i] = *(struct CPU*)malloc(sizeof(struct CPU));
+     //cpu_array->idle = 0;
+    initializeCPUS(&cpu_array[i]);
      printf( "r[%d] = %d\n", i, cpu_array[i]);
 
   }
@@ -49,13 +57,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
 }
 
-//one cannot return array in C, only a pointer to the array
-struct initializeCPUS(int num) {
-  struct CPU cpu;
-  cpu = *(struct CPU*)malloc(sizeof(struct CPU));
-  cpu -> idle = 0;
-  return cpu;
-}
+
 
 void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats) {
   // create a new Process
@@ -68,7 +70,7 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
     // io service, interarrival, burst, cpu service
 
   struct Event* interarrivalProcessTime = (struct Event*)malloc(sizeof(struct Event));
-  interarrivalProcessTime = clock_time + newProcess -> interarrival;
+  interarrivalProcessTime = clock_time + newProcess -> interarrival_time;
   interarrivalProcessTime -> type = 1;
   enqueue(interarrivalProcessTime);
 
