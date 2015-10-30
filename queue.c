@@ -84,7 +84,7 @@ int peek() {
 /**
 * Returns the size of the queue
 **/
-int size() {
+int sizeQ() {
 	return QUEUE_SIZE;
 }
 

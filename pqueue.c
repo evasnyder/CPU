@@ -47,15 +47,15 @@ int add (struct Event *newEvent) {
 
 		SIZE = SIZE + 1;
 		return 1;
-	} else if(HEAD -> priority < new_priority) {
+	} else if(HEAD -> timestamp > new_priority) {
 		// if our new priority should be the first in the list
 		// i.e if the head priority is less than our new one
 		newEvent -> next = HEAD;
 		HEAD = newEvent;
 		SIZE = SIZE + 1;
 		return 1;
-	} else if(TAIL -> priority > new_priority) {
-			TAIL -> next = newEvent;
+	} else if(TAIL -> timestamp > new_priority) {
+			newEvent -> next = TAIL;
 			TAIL = newEvent;
 			SIZE = SIZE + 1;
 	}
@@ -150,7 +150,7 @@ int peek() {
 /**
 * Method that returns the size of the queue
 **/
-int size() {
+int sizePQ() {
 	return SIZE;
 }
 
