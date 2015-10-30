@@ -22,14 +22,14 @@ void enqueue (struct Process *newProcess) {
 	newProcess -> next = NULL;
 
 	// save the value as passed to the value in the node
-	newNode -> value = new_value;
+	//newNode -> value = new_value;
 
 	// if we have no other nodes in our list currently i.e head is null
 	if(QUEUE_HEAD == NULL) {
 		// new node is the head
-		QUEUE_HEAD = newNode;
+		QUEUE_HEAD = newProcess;
 		// new node is also the tail
-		QUEUE_TAIL = newNode;
+		QUEUE_TAIL = newProcess;
 
 		QUEUE_SIZE = QUEUE_SIZE + 1;
 
@@ -37,10 +37,10 @@ void enqueue (struct Process *newProcess) {
 	}
 
 	// tail now points to the new value node
-	QUEUE_TAIL -> next = newNode;
+	QUEUE_TAIL -> next = newProcess;
 
 	// tail is now the new node
-	QUEUE_TAIL = newNode;
+	QUEUE_TAIL = newProcess;
 
 	QUEUE_SIZE = QUEUE_SIZE + 1;
 }
@@ -68,7 +68,7 @@ void dequeue() {
 	} else {
 		// head is now whatever the original head is pointing to
 		QUEUE_HEAD = QUEUE_HEAD -> next;
-		printf("The dequeued node value is: %d\n", headToBeRemoved -> value);
+		//printf("The dequeued node value is: %d\n", headToBeRemoved -> value);
 		QUEUE_SIZE = QUEUE_SIZE - 1;
 	}
 
@@ -76,12 +76,12 @@ void dequeue() {
 	free(headToBeRemoved);
 }
 
-/**
-* Method which returns the value of the head node
-**/
-int peek() {
-	return QUEUE_HEAD -> value;
-}
+// *
+// * Method which returns the value of the head node
+// *
+// int peek() {
+// 	return QUEUE_HEAD -> value;
+// }
 
 /**
 * Returns the size of the queue
@@ -97,7 +97,7 @@ void printQueue() {
 	struct Process* newHead = QUEUE_HEAD;
 	printf("Your Queue: ");
 	while(newHead != NULL) {
-		printf(" %d", newHead -> value);
+		printf(" %d", newHead -> cpu_service_time);
 		newHead = newHead -> next;
 	}
 	printf("\n");

@@ -34,6 +34,9 @@ struct Process {
   int cpu_service_time_remaining;
 
   int CPU_running_on;
+    
+    struct Process* next;
+    
 };
 
 struct CPU {
