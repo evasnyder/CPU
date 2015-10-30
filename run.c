@@ -19,7 +19,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   struct CPU cpu_array[numCPUS];
 
   int i;
-  for ( i = 0; i < 10; ++i)
+  for ( i = 0; i < numCPUS; ++i)
   {
      //cpu_array[i] = *(struct CPU*)malloc(sizeof(struct CPU));
      //cpu_array->idle = 0;
@@ -94,45 +94,46 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
   // check to see if any CPUs are idle
   int i;
   for (i = 0; i < numCPUs; i++) {
-    if (CPUs[i] -> idle == 0) {
+    if (CPUs[i].idle == 0) {
       struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
-      newEvent -> process = event -> process;
+      struct Process* tempProcess = newEvent -> process;
+      tempProcess= event -> process;
       free(event);
 
       // if the CPU is free - put a process on it ==> ROUND ROBIN HERE TO KNOW WHICH ONE
 
       // mark the CPU as full
-      struct CPUs[i] -> idle = 1;
+      CPUs[i].idle = 1;
 
       // generate a new event to remove it from the CPU
 
-      if ( (newEvent -> process -> cpu_service_time_remaining) < quantum ) {
+      if ( (tempProcess-> cpu_service_time_remaining) < quantum ) {
         // check to see if the process on the CPU should be terminated next
         // generate the time that the process should be terminated at
-        newEvent -> timeStamp = clock_time + (newEvent -> process -> cpu_service_time_remaining);
+        newEvent -> timeStamp = clock_time + (tempProcess -> cpu_service_time_remaining);
         newEvent -> type = 4;
-        newEvent -> process -> CPU_running_on = i;
+        tempProcess -> CPU_running_on = i;
 
         // put onto the event queue
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
         stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 
-      } else if ( (newEvent -> process -> burst_time) < quantum){
+      } else if ( (tempProcess -> burst_time) < quantum){
         // check to see if the process on the CPU should go to IO
         newEvent -> timeStamp = clock_time + (process -> burst_time);
         newEvent -> type = 5; // return from IO aka go back to ready queue
-        newEvent -> process -> CPU_running_on = i;
+        tempProcess -> CPU_running_on = i;
         // put onto the event queue
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
         stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 
-      } else if ( (newEvent -> process -> cpu_service_time_remaining) > (newEvent -> process -> burst_time) > quantum ) {
+      } else if ( (tempProcess -> cpu_service_time_remaining) > (tempProcess -> burst_time) > quantum ) {
         // check to see if the process on the CPU quantum expires
         newEvent -> timeStamp = clock_time + quantum + contextSwitch;
         newEvent -> type = 6;
-        newEvent -> process -> CPU_running_on = i;
+        tempProcess -> CPU_running_on = i;
         // put onto the event queue
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();

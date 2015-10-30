@@ -71,3 +71,5 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
 
 struct Process generateRandomValues(int processType, struct Process *process);
 
+void initializeCPUS(struct CPU *cpu);
+
