@@ -13,16 +13,16 @@ void print_usage() {
 int main(int argc, char *argv[]) {
     int opt= 0;
     int area = -1, perimeter = -1, breadth = -1;
-    char *length;
+    char *fileName;
     FILE *fp;
 
 
     //Specifying the expected options
     //The two options l and b expect numbers as argument
     static struct option long_options[] = {
+        {"fileName",    required_argument, 0,  'f' },
         {"area",      no_argument,       0,  'a' },
         {"perimeter", no_argument,       0,  'p' },
-        {"length",    required_argument, 0,  'f' },
         {"breadth",   required_argument, 0,  'b' },
         {0,           0,                 0,  0   }
     };
@@ -31,13 +31,14 @@ int main(int argc, char *argv[]) {
     while ((opt = getopt_long(argc, argv,"apf:b:", 
                    long_options, &long_index )) != -1) {
         switch (opt) {
+            case 'f' : fileName = optarg;
+              printf("Area: %s\n",optarg); 
+                 break;
              case 'a' : area = 0;
                  break;
              case 'p' : perimeter = 0;
                  break;
-             case 'f' : length = optarg;
-              printf("Area: %s\n",optarg); 
-                 break;
+             
              case 'b' : breadth = atoi(optarg);
                  break;
              default: print_usage(); 
@@ -46,8 +47,8 @@ int main(int argc, char *argv[]) {
     }
 
 
-     printf("Area: %s\n",length); 
-    fp = fopen(length, "r");
+     printf("Area: %s\n",fileName); 
+    fp = fopen(fileName, "r");
      
     char s1[200],*p;
     while (fgets(s1, 200, fp))

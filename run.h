@@ -3,6 +3,7 @@
 struct Event {
   int timeStamp;
   int type;
+  struct Event* next;
     // create a process of x type == 1
     // schedulingDecision = 2
     // remove a process

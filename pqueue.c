@@ -26,20 +26,23 @@ int main() {
 *  Method to add a new node to the queue which takes in a value and a priority
 **/
 int add (struct Event *newEvent) {
+
+	int new_priority;
+	int new_value;
 	//printf("Adding element: %d\n", new_priority);
-	// create a new node with the size of a Node
+	// create a new event with the size of a Event
 	struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
-	// save the value as passed to the value in the node
-	newEvent-> value = new_value;
+	// save the value as passed to the value in the event
+	newEvent-> value = type;
 	newEvent -> timestamp = new_priority;
-	// save the next within the node as null i.e it's now the last node
+	// save the next within the event as null i.e it's now the last event
 	newEvent -> next = NULL;
 
-	// if we have no other nodes in our list currently i.e head is null
+	// if we have no other events in our list currently i.e head is null
 	if (HEAD == NULL) {
-		// new node is the head
+		// new event is the head
 		HEAD = newEvent;
-		// new node is also the tail
+		// new event is also the tail
 		TAIL = newEvent;
 
 		SIZE = SIZE + 1;
