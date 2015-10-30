@@ -3,6 +3,8 @@
 #include "run.h"
 
 int clock_time = 0;
+struct batch* avgBatch;
+struct interactive* avgInteractive;
 
 int main() {
 
@@ -207,10 +209,24 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
 
 //method to save processes data from the input file
 void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArrival, int avgIO) {
+  avgBatch = (struct batch*)malloc(sizeof(struct batch));
+  avgInteractive = (struct interactive*)malloc(sizeof(struct interactive));
+
   switch (process_type) {
     case 1:
       // batch
-      
+      avgBatch -> cpuTime = avgCPU;
+      avgBatch -> burstTime = avgBurst;
+      avgBatch -> interArrTime = avgInterArrival;
+      avgBatch -> IOTime = avgIO;
+      break;
+    case 2:
+      // interactive
+      avgInteractive -> cpuTime = avgCPU;
+      avgInteractive -> burstTime = avgBurst;
+      avgInteractive -> interArrTime = avgInterArrival;
+      avgInteractive -> IOTime = avgIO;
+      break;
   }
 }
 
