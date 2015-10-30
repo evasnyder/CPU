@@ -43,7 +43,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
       if(event -> type == 1) {
         // create a new process
-        createNewProcess(event, clock_time, stats);
+        createNewProcess(event, clock_time, stats, event -> process_type);
       } else if (event -> type == 2) {
         schedulingDecision(event, contextSwitch, cpu_array, numCPUS, quantum, stats);
       } else if (event -> type == 4 || event -> type == 5 || event -> type == 6) {
@@ -63,7 +63,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
 
 
-void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats) {
+void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats, int process_type) {
   // create a new Process
   struct Process* newProcess = (struct Process*)malloc(sizeof(struct Process));
   // create a new Event
@@ -73,9 +73,11 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
   // set its values to the right things
     // io service, interarrival, burst, cpu service
 
+
   struct Event* interarrivalProcessTime = (struct Event*)malloc(sizeof(struct Event));
   interarrivalProcessTime = clock_time + newProcess -> interarrival_time;
   interarrivalProcessTime -> type = 1;
+  interarrivalProcessTime -> process_type = process_type;
   enqueue(interarrivalProcessTime);
 
   free(event);
@@ -152,7 +154,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
 void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextSwitch, struct Statistics *stats) {
   // clock is equal to the time stamp (i.e priority) from the process being removed
   // from the event queue
-  struct Event* newEvent; 
+  struct Event* newEvent;
   switch(type) {
     // terminate
     case 4:

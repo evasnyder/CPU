@@ -12,7 +12,7 @@ struct Event {
       // quantum expire == 6
     // return from IO == 7
   struct Process *process;
-
+  int process_type;
 };
 
 struct Process {
@@ -63,7 +63,7 @@ struct Statistics {
 
 void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum);
 
-void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats);
+void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats, int proess_type);
 
 void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs, int numCPUs, int quantum, struct Statistics *stats);
 
@@ -72,4 +72,3 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
 struct Process generateRandomValues(int processType, struct Process *process);
 
 void initializeCPUS(struct CPU *cpu);
-
