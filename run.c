@@ -8,10 +8,10 @@ int clock_time = 0;
 // event queue is the to do list
 
 // pass processes?
-void runCPU(int runtime, int numCPUS, int contextSwitch, int Quantum) {
+void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
   // create an array of structs for the CPUS
-  Struct CPU cpu = initializeCPUS(numCPUS);
+  Struct CPU cpu_array = initializeCPUS(numCPUS);
 
   // while there is still runtime left in the CPU
   while (clock_time <= runtime) {
@@ -24,53 +24,14 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int Quantum) {
 
       if(event -> type == 1) {
         // create a new process
-        createNewProcess(clock_time);
-
+        createNewProcess(event, clock_time);
       } else if (event -> type == 2) {
-        // go to ready queue
-        schedulingDecision(event, clock_time);
-
-      } else if (event -> type == 3) {
-        // terminate a process
-
-      } else if (event -> type == 4) {
-        // go to IO
-
-      } else if (event -> type == 5) {
-        // quantum expire
-
-      } else if (event -> type == 6) {
-        // return from IO
-
+        schedulingDecision(event, contextSwitch, cpu_array, numCPUS, quantum);
+      } else if (event -> type == 4 || event -> type == 5 || event -> type == 6) {
+        removeProcess(event -> type, event, cpu_array, contextSwitch);
       } else {
         return;
       }
-      // CHECK to see if there are any new processes that should be added (i.e interarrival time)
-        // call create process
-
-        // EXECUTE the event type of the event
-
-        // IF the event type is create -> move to the ready queue
-
-        // FOR loop through the CPUs and if they're idle, have a process go on to it...
-          // ?? HOW DOES A PROCESS GO ON TO A CPU IN CODE ??
-
-        // MOVE from the ready queue to the CPU if there are idle CPUS
-
-        // ROUND ROBIN ALGORITHM TO MOVE FROM READY QUEUE TO CPU
-
-        // ADD context switch amount onto the quantum for the process
-
-          // CHECK to see if any of the events on the CPU should be removed - CALL REMOVE PROCESS
-
-            // terminate: free memory + update statistics
-              // if CPU > clock time
-
-              // IO: generate an event to go back to the ready queue
-              // if burst < quantum
-
-              // Quantum Expires: go back to ready queue
-              // if CPU > burst > quantum
   }
 }
 
@@ -99,22 +60,23 @@ void createNewProcess(Event event, int timeStamp) {
   newEvent -> type = 2;
   newEvent -> process = newProcess;
 
-  enqueue(newEvent);
-
-  // send directly to the ready queue to be placed in the running to go on the CPU
+  // add event to the event queue
   add(newEvent);
 }
 
 void schedulingDecision(Event event, int contextSwitch, Struct CPUs, int numCPUs, int quantum) {
-  struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
-  newEvent -> process = event -> process;
-  free(event);
+  // add the new event to the ready queue
+  enqueue(event);
 
   // check to see if any CPUs are idle
   int i;
   for (i = 0; i < numCPUs; i++) {
     if (CPUs[i] -> idle == 0) {
-      // if the CPU is free - put a process on it
+      struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
+      newEvent -> process = event -> process;
+      free(event);
+
+      // if the CPU is free - put a process on it ==> ROUND ROBIN HERE TO KNOW WHICH ONE
 
       // mark the CPU as full
       CPUs[i] -> idle = 1;
@@ -125,22 +87,24 @@ void schedulingDecision(Event event, int contextSwitch, Struct CPUs, int numCPUs
         // check to see if the process on the CPU should be terminated next
         // generate the time that the process should be terminated at
         newEvent -> timeStamp = clock_time + (process -> cpu_service_time_remaining);
-        newEvent -> type = 3;
+        newEvent -> type = 4;
         newEvent -> process -> CPU_running_on = i;
 
         // put onto the event queue
         add(newEvent);
+        
       } else if ( (process -> burst_time) < quantum){
         // check to see if the process on the CPU should go to IO
         newEvent -> timeStamp = clock_time + (process -> burst_time);
-        newEvent -> type = 6; // return from IO aka go back to ready queue
+        newEvent -> type = 5; // return from IO aka go back to ready queue
         newEvent -> process -> CPU_running_on = i;
         // put onto the event queue
         add(newEvent);
+
       } else if ( (process -> cpu_service_time_remaining) > (process -> burst_time) > quantum ) {
         // check to see if the process on the CPU quantum expires
         newEvent -> timeStamp = clock_time + quantum + contextSwitch;
-        newEvent -> type = 2;
+        newEvent -> type = 6;
         newEvent -> process -> CPU_running_on = i;
         // put onto the event queue
         add(newEvent);
@@ -149,11 +113,10 @@ void schedulingDecision(Event event, int contextSwitch, Struct CPUs, int numCPUs
   }
 }
 
-void removeProcess(int type, Event event, Struct CPUs) {
+void removeProcess(int type, Event event, Struct CPUs, int contextSwitch) {
   // clock is equal to the time stamp (i.e priority) from the process being removed
   // from the event queue
   switch(type) {
-
     // terminate
     case 4:
       // update statistics
@@ -174,8 +137,9 @@ void removeProcess(int type, Event event, Struct CPUs) {
       // go back to the schedulingDecision afterwards
       newEvent -> type = 2;
 
-      // WHEN DO I FREE UP THE CPU ???
+      CPUs[process -> CPU_running_on] = 0;
 
+      free(event);
       // enqueue onto the event queue
       add(newEvent);
       break;
@@ -183,9 +147,16 @@ void removeProcess(int type, Event event, Struct CPUs) {
     // quantum expire
     case 6:
       // update information for the event
+      struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
+      newEvent -> process = event -> process;
+      newEvent -> timeStamp = clock_time + contextSwitch;
+      newEvent -> type = 2;
 
-      // go back to the ready queue
-      enqueue(event);
+      CPUs[process -> CPU_running_on] = 0;
+
+      free(event);
+      // go back to the event queue
+      add(newEvent)
       break;
   }
 
