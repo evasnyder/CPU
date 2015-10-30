@@ -42,6 +42,15 @@ struct CPU {
   int idle = 0;
 };
 
+struct Statistics {
+  int len_simulation_time;
+  int num_processes_complete;
+  int final_len_event_queue;
+  int avg_len_event_queue;
+  int final_len_ready_queue;
+  int avg_len_ready_queue;
+};
+
 
 void createEvent(timeStamp, type, process);
 

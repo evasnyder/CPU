@@ -10,6 +10,8 @@ int clock_time = 0;
 // pass processes?
 void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
+    struct Statistics* stats = (struct Statistics*)malloc(sizeof(struct Statistics));
+
   // create an array of structs for the CPUS
   Struct CPU cpu_array = initializeCPUS(numCPUS);
 
@@ -33,6 +35,11 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
         return;
       }
   }
+
+  stats -> len_simulation_time = runtime;
+  stats -> final_len_event_queue = sizePQ();
+  stats -> final_len_ready_queue = sizeQ();
+
 }
 
 Struct[] initializeCPUS(int num) {
@@ -92,7 +99,7 @@ void schedulingDecision(Event event, int contextSwitch, Struct CPUs, int numCPUs
 
         // put onto the event queue
         add(newEvent);
-        
+
       } else if ( (process -> burst_time) < quantum){
         // check to see if the process on the CPU should go to IO
         newEvent -> timeStamp = clock_time + (process -> burst_time);
