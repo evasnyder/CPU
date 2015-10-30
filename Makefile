@@ -1,14 +1,3 @@
-run: run.c
-	gcc -o run run.c
-
-queue: queue.c
-	gcc -o queue queue.c
-
-switch: switch.c
-	gcc -o switch swith.c
-
-pqueue: pqueue.c
-	gcc -o pqueue pqueue.c
-
-distribution: distribution.c
-	gcc -o distribution distribution.c
+CC = gcc
+hello : run.c queue.c pqueue.c
+		$(CC) -o hello pqueue.c queue.c run.c -I.
