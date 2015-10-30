@@ -43,7 +43,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
       } else if (event -> type == 2) {
         schedulingDecision(event, contextSwitch, cpu_array, numCPUS, quantum, stats);
       } else if (event -> type == 4 || event -> type == 5 || event -> type == 6) {
-        removeProcess(event -> type, event, cpu_array, contextSwitch);
+        removeProcess(event -> type, event, cpu_array, contextSwitch, stats);
       } else {
         return;
       }
@@ -96,8 +96,9 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
   for (i = 0; i < numCPUs; i++) {
     if (CPUs[i].idle == 0) {
       struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
-      struct Process* tempProcess = newEvent -> process;
-      tempProcess= event -> process;
+      struct Process* tempProcess = (struct Process*)malloc(sizeof(struct Process));
+      tempProcess = event -> process;
+      newEvent -> process = tempProcess;
       free(event);
 
       // if the CPU is free - put a process on it ==> ROUND ROBIN HERE TO KNOW WHICH ONE
@@ -107,29 +108,30 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
 
       // generate a new event to remove it from the CPU
 
-      if ( (tempProcess-> cpu_service_time_remaining) < quantum ) {
+      if ( (newEvent -> process -> cpu_service_time_remaining) < quantum ) {
         // check to see if the process on the CPU should be terminated next
         // generate the time that the process should be terminated at
-        newEvent -> timeStamp = clock_time + (tempProcess -> cpu_service_time_remaining);
+        newEvent -> timeStamp = clock_time + (newEvent -> process  -> cpu_service_time_remaining);
         newEvent -> type = 4;
-        tempProcess -> CPU_running_on = i;
+        newEvent -> process  -> CPU_running_on = i;
 
         // put onto the event queue
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
         stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 
-      } else if ( (tempProcess -> burst_time) < quantum){
+      } else if ( (newEvent -> process  -> burst_time) < quantum){
         // check to see if the process on the CPU should go to IO
-        newEvent -> timeStamp = clock_time + (process -> burst_time);
+
+        newEvent -> timeStamp = clock_time + (newEvent -> process -> burst_time);
         newEvent -> type = 5; // return from IO aka go back to ready queue
-        tempProcess -> CPU_running_on = i;
+        newEvent -> process -> CPU_running_on = i;
         // put onto the event queue
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
         stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 
-      } else if ( (tempProcess -> cpu_service_time_remaining) > (tempProcess -> burst_time) > quantum ) {
+      } else if ( (newEvent -> process -> cpu_service_time_remaining) > (newEvent -> process  -> burst_time) > quantum ) {
         // check to see if the process on the CPU quantum expires
         newEvent -> timeStamp = clock_time + quantum + contextSwitch;
         newEvent -> type = 6;
@@ -143,14 +145,15 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
   }
 }
 
-void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextSwitch) {
+void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextSwitch, struct Statistics *stats) {
   // clock is equal to the time stamp (i.e priority) from the process being removed
   // from the event queue
+  struct Event* newEvent; 
   switch(type) {
     // terminate
     case 4:
       // update statistics
-      CPUs[process -> CPU_running_on] = 0;
+      CPUs[event -> process -> CPU_running_on].idle= 0;
       free(event);
       // free event from memory
       break;
@@ -158,7 +161,7 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
     // go to IO
     case 5:
       // generate a new event to go back to the ready queue
-      struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
+      newEvent = (struct Event*)malloc(sizeof(struct Event));
       newEvent -> process = event -> process;
       // call schedulingDecision after clock_time + io service time
       // i.e go back to the ready queue after the time on the IO has been completed
@@ -167,7 +170,7 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
       // go back to the schedulingDecision afterwards
       newEvent -> type = 2;
 
-      CPUs[process -> CPU_running_on] = 0;
+      CPUs[event -> process -> CPU_running_on].idle = 0;
 
       free(event);
       // enqueue onto the event queue
@@ -179,12 +182,12 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
     // quantum expire
     case 6:
       // update information for the event
-      struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
+      newEvent = (struct Event*)malloc(sizeof(struct Event));
       newEvent -> process = event -> process;
       newEvent -> timeStamp = clock_time + contextSwitch;
       newEvent -> type = 2;
 
-      CPUs[process -> CPU_running_on] = 0;
+      CPUs[event -> process -> CPU_running_on].idle = 0;
 
       free(event);
       // go back to the event queue
@@ -205,7 +208,7 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
 * 2 =
 * 3 =
 */
-Process generateRandomValues(int processType, struct Process *process) {
+struct Process generateRandomValues(int processType, struct Process *process) {
 
   switch(processType){
     // first process type
@@ -217,7 +220,7 @@ Process generateRandomValues(int processType, struct Process *process) {
       // calculate interarrival time
 
       // calculate IO service time
-      return process;
+      return *process;
       break;
 
     case 2:
@@ -228,7 +231,7 @@ Process generateRandomValues(int processType, struct Process *process) {
       // calculate interarrival time
 
       // calculate IO service time
-      return process;
+      return *process;
       break;
 
     case 3:
@@ -239,7 +242,7 @@ Process generateRandomValues(int processType, struct Process *process) {
       // calculate interarrival time
 
       // calculate IO service time
-      return process;
+      return *process;
       break;
   }
 }

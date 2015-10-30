@@ -67,7 +67,7 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
 
 void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs, int numCPUs, int quantum, struct Statistics *stats);
 
-void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextSwitch);
+void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextSwitch, struct Statistics *stats);
 
 struct Process generateRandomValues(int processType, struct Process *process);
 
