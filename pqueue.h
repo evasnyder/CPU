@@ -1,19 +1,8 @@
-#include <stdio.h>
 
-
-
-
-
-int add (int new_value, int new_priority);
-
-int removeNode (int new_priority);
-
-int contains(int new_priority);
-
+//function signatures for the main Priority Queue methods
+void insert(int, int);
+int delete();
 void printQueue();
-
-int peek();
-
 int isEmpty();
+int sizePQ();
 
-void clearQueue();

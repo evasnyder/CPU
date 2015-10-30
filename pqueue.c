@@ -1,194 +1,107 @@
-// written by Eva Snyder
-
 #include <stdio.h>
 #include <stdlib.h>
-<<<<<<< HEAD
-#include "pqueue.h"
-=======
-#include "priorityQueue.h"
+#include "PriorityQueue.h"
 #include "run.h"
->>>>>>> origin/master
 
-struct Event *HEAD = NULL;
-struct Event *TAIL = NULL;
-int SIZE = 0;
+//declare the head Node of the Queue and set it to null
+struct Event* head = NULL;
 
+//insert into the Queue by giving the element and it's priority as the parameters
+//declare two temp Nodes, temp1 and temp2
+//allocate memory to temp1 and set it's data and priority to be the same as the element to be inserted
+//if the Queue is empty or if the priority of the element to be inserted is higher, add temp1 before the head and set it as the head
+//if the Queue is not empty and the priority of the new element is lower than the head's, then traverse through the Queue until the correct position for its priority is found
+void insert(struct Event* newEvent)
+{
+    int newElement;
+    int eventPriority;
+	struct Event* temp1;
+	struct Event* temp2;
 
-int main() {
+	temp1 = (struct Event*)malloc(sizeof(struct Event));
 
+	temp1->type = newElement;
+	temp1->timeStamp = eventPriority;
 
-
-}
-
-
-
-/**
-*  Method to add a new node to the queue which takes in a value and a priority
-**/
-int add (struct Event *newEvent) {
-
-	int new_priority;
-	int new_value;
-	//printf("Adding element: %d\n", new_priority);
-	// create a new event with the size of a Event
-	struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
-	// save the value as passed to the value in the event
-	newEvent-> value = type;
-	newEvent -> timestamp = new_priority;
-	// save the next within the event as null i.e it's now the last event
-	newEvent -> next = NULL;
-
-	// if we have no other events in our list currently i.e head is null
-	if (HEAD == NULL) {
-		// new event is the head
-		HEAD = newEvent;
-		// new event is also the tail
-		TAIL = newEvent;
-
-		SIZE = SIZE + 1;
-		return 1;
-	} else if(HEAD -> timestamp > new_priority) {
-		// if our new priority should be the first in the list
-		// i.e if the head priority is less than our new one
-		newEvent -> next = HEAD;
-		HEAD = newEvent;
-		SIZE = SIZE + 1;
-		return 1;
-	} else if(TAIL -> timestamp > new_priority) {
-			newEvent -> next = TAIL;
-			TAIL = newEvent;
-			SIZE = SIZE + 1;
+	//if the Queue is empty of if the element that is being inserted has a higher priority
+	if (isEmpty() || eventPriority < head->timeStamp)
+	{
+		temp1->next = head;
+		head = temp1;
 	}
+
 	else {
-		struct Event* newHead = HEAD;
-		if(newHead -> next == NULL) {
-			HEAD -> next = newEvent;
-			TAIL = newNode;
+		temp2 = head;
+
+		while (temp2->next != NULL && temp2->next->timeStamp <= eventPriority)
+		{
+			temp2 = temp2->next;
 		}
-		else {
-			// if the next node's priority is less than the priority you're inserting you want to insert in before that node
-			while(newHead -> next -> priority > new_priority) {
-				newHead = newHead -> next;
-			}
-				// insert here
-				newNode -> next = newHead -> next;
-				newHead -> next = newNode;
-				SIZE = SIZE + 1;
-		}
-		return 1;
+
+		temp1->next = temp2->next;
+		temp2->next = temp1;
 	}
-	return 0;
 }
 
-/**
-* Method to remove a node in the queue based off of it's priority
-**/
-int removeNode (int new_priority) {
-	printf("Removing Element: %d\n", new_priority);
+int getFirst()
+{
+    //printf("%s %d", "First:", head->data);
+    return head->type;
+}
 
-	if(!contains(new_priority)) {
-		printf("Your queue does not contain that priority.\n Cannot be removed.\n");
+//to delete an element, first check whether the Queue is empty. If it isn't, declare a temp Node and save the head Node to it
+//declare an int variable and save head's data to it
+//set the second Node in the Queue (the one after the head) as the head and free temp's memory to get rid of the previous head in memory
+//return the data of the deleted head
+int delete()
+{
+	struct Event* temp;
+	int event;
+
+	if (isEmpty())
+	{
 		return 0;
 	}
 
-	// if the list is empty
-	// i.e head is equal to null
-	if(HEAD == NULL) {
-		// there's nothing to do because it's already empty so woohoo
-		printf("The queue is already empty\n");
-		return 0;
-	} else if (HEAD -> priority == new_priority) {
-		// if we're removing the head
-		HEAD = HEAD -> next;
-		SIZE = SIZE - 1;
-	} else {
-		struct Node* newHead = HEAD;
-		// if we're not looking at the tail
-		if(newHead -> next != TAIL) {
-			while(newHead -> next -> priority != new_priority) {
-				newHead = newHead -> next;
-			}
-			// if the next node is the one we want to remove
-			if(newHead -> next -> priority == new_priority) {
-				struct Node* nodeToRemove = newHead -> next;
-				newHead -> next = nodeToRemove -> next;
-				free(nodeToRemove);
-			}
-		} else {
-			// if we're removing the tail element
-			newHead -> next = NULL;
-			TAIL = newHead;
-		}
+	else 
+	{
+		temp = head;
+		event = temp->type;
+		head = head->next;
+		free(temp);
+	}
+
+	printf("%s %d %s", "Deleted:", event, "\n");
+	return event;
+}
+
+//check to see whether a Queue is empty or not by returning 1 if it is and 0 if it isn't
+int isEmpty()
+{
+	if (head == NULL)
 		return 1;
-	}
-
-	return 0;
+	else
+		return 0;
 }
 
-/**
-* A method which checks to see if the passed priority is in the queue
-**/
-int contains(int new_priority) {
-	struct Node* newHead = HEAD;
-	while(newHead != NULL) {
-		if(newHead -> priority == new_priority) {
-			return 1;
-		} else {
-			newHead = newHead -> next;
-		}
-	}
-	return 0;
-}
-
-/**
-* Method which returns the priority of the head node
-**/
-int peek() {
-	return HEAD -> priority;
-}
-
-/**
-* Method that returns the size of the queue
-**/
-int sizePQ() {
-	return SIZE;
-}
-
-/**
-* Method that prints out the queue
-**/
+//to print the Queue, first check whether it's empty. If it isn't, then traverse through the Queue and print out each
+//Node's data and priority in the Queue
 void printQueue() {
-	struct Node* newHead = HEAD;
-	printf("Your Priority Queue: ");
-	while(newHead != NULL) {
-		printf(" %d", newHead -> priority);
-		newHead = newHead -> next;
-	}
-	printf("\n");
-}
+	struct Event* temp;
+	temp = head;
 
-/**
-* Method to check if the queue is empty
-**/
-int isEmpty() {
-	if(HEAD == NULL && TAIL == NULL) {
-		return 1;
-	} else {
-		return 0;
+	if (isEmpty())
+	{
+		return;
+	}
+
+	else {
+		while (temp != NULL)
+		{
+			printf("%s %d %s %d", "Data:", temp->type, "Priority:",temp->timeStamp);
+			printf("\n");
+			temp = temp->next;
+		}
 	}
 }
 
-/**
-* Method to clear the queue completely
-**/
-void clearQueue() {
-	struct Node* temp = HEAD;
-	while(temp != NULL) {
-		struct Node* nodeToRemove = temp;
-		temp = temp -> next;
-		free(nodeToRemove);
-	}
-	HEAD = NULL;
-	TAIL = NULL;
-	SIZE = 0;
-}
