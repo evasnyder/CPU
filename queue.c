@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "queue.h"
+#include "run.h"
 
 //queue pointers
 struct Process *QUEUE_HEAD = NULL;
@@ -11,13 +12,14 @@ int QUEUE_SIZE = 0;
 /**
 * Method to add a node to the queue at the back of it.
 **/
-void enqueue (int new_value) {
+void enqueue (struct Process *newProcess) {
+    int new_value;
 	printf("Enqueueing element: %d\n", new_value);
 	// create a new node with the size of a Node
-	struct Process* newNode = (struct Process*)malloc(sizeof(struct Process));
+	struct Process* newProcess = (struct Process*)malloc(sizeof(struct Process));
 
 	// save the next within the node as null i.e it's now the last node
-	newNode -> next = NULL;
+	newProcess -> next = NULL;
 
 	// save the value as passed to the value in the node
 	newNode -> value = new_value;

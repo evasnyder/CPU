@@ -5,6 +5,7 @@
 
 //declare the head Node of the Queue and set it to null
 struct Event* head = NULL;
+int size = 0;
 
 //insert into the Queue by giving the element and it's priority as the parameters
 //declare two temp Nodes, temp1 and temp2
@@ -28,6 +29,7 @@ void insert(struct Event* newEvent)
 	{
 		temp1->next = head;
 		head = temp1;
+        size = size +1;
 	}
 
 	else {
@@ -40,6 +42,7 @@ void insert(struct Event* newEvent)
 
 		temp1->next = temp2->next;
 		temp2->next = temp1;
+        size = size +1;
 	}
 }
 
@@ -69,10 +72,19 @@ int delete()
 		event = temp->type;
 		head = head->next;
 		free(temp);
+        if (size != 0)
+        {
+            size = size -1;
+        }
 	}
 
 	printf("%s %d %s", "Deleted:", event, "\n");
 	return event;
+}
+
+int sizePQ()
+{
+    return size;
 }
 
 //check to see whether a Queue is empty or not by returning 1 if it is and 0 if it isn't
