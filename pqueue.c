@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "priorityQueue.h"
+#include "pqueue.h"
 
 struct Node *HEAD = NULL;
 struct Node *TAIL = NULL;

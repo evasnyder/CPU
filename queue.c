@@ -3,10 +3,9 @@
 #include "queue.h"
 
 //queue pointers
-struct Node *QUEUE_HEAD = NULL;
-struct Node *QUEUE_TAIL = NULL;
+struct Process *QUEUE_HEAD = NULL;
+struct Process *QUEUE_TAIL = NULL;
 int QUEUE_SIZE = 0;
-
 
 
 /**
@@ -15,7 +14,7 @@ int QUEUE_SIZE = 0;
 void enqueue (int new_value) {
 	printf("Enqueueing element: %d\n", new_value);
 	// create a new node with the size of a Node
-	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+	struct Process* newNode = (struct Process*)malloc(sizeof(struct Process));
 
 	// save the next within the node as null i.e it's now the last node
 	newNode -> next = NULL;
@@ -51,7 +50,7 @@ void dequeue() {
 	printf("Dequeueing element");
 	// save the value of the head before the dequeue begins
 	// going to print the value of the currentHead after you remove it from the list
-	struct Node* headToBeRemoved = QUEUE_HEAD;
+	struct Process* headToBeRemoved = QUEUE_HEAD;
 
 	// if the list is empty
 	// i.e head is equal to null
@@ -93,7 +92,7 @@ int size() {
 * Method that prints out the queue
 **/
 void printQueue() {
-	struct Node* newHead = QUEUE_HEAD;
+	struct Process* newHead = QUEUE_HEAD;
 	printf("Your Queue: ");
 	while(newHead != NULL) {
 		printf(" %d", newHead -> value);
@@ -117,9 +116,9 @@ int isEmpty() {
 * Method to clear the queue completely
 **/
 void clearQueue() {
-	struct Node* temp = QUEUE_HEAD;
+	struct Process* temp = QUEUE_HEAD;
 	while(temp != NULL) {
-		struct Node* nodeToRemove = temp;
+		struct Process* nodeToRemove = temp;
 		temp = temp -> next;
 		free(nodeToRemove);
 	}
