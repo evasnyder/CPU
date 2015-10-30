@@ -78,4 +78,6 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
 
 struct Process generateRandomValues(int processType, struct Process *process);
 
+void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArrival, int avgIO);
+
 void initializeCPUS(struct CPU *cpu);
