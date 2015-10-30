@@ -49,6 +49,12 @@ struct Statistics {
   int avg_len_event_queue;
   int final_len_ready_queue;
   int avg_len_ready_queue;
+
+  int total_event_queue_lengths;
+  int num_event_queue_changed;
+
+  int total_ready_queue_lengths;
+  int num_ready_queue_changed;
 };
 
 

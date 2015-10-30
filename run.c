@@ -26,7 +26,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
       if(event -> type == 1) {
         // create a new process
-        createNewProcess(event, clock_time);
+        createNewProcess(event, clock_time, stats);
       } else if (event -> type == 2) {
         schedulingDecision(event, contextSwitch, cpu_array, numCPUS, quantum);
       } else if (event -> type == 4 || event -> type == 5 || event -> type == 6) {
@@ -39,6 +39,8 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   stats -> len_simulation_time = runtime;
   stats -> final_len_event_queue = sizePQ();
   stats -> final_len_ready_queue = sizeQ();
+  stats -> avg_len_event_queue = total_event_queue_lengths / num_event_queue_changed;
+  stats -> avg_len_ready_queue = total_ready_queue_lengths / num_ready_queue_changed;
 
 }
 
@@ -51,7 +53,7 @@ Struct[] initializeCPUS(int num) {
   return cpu;
 }
 
-void createNewProcess(Event event, int timeStamp) {
+void createNewProcess(Event event, int timeStamp, Struct stats) {
   // create a new Process
   struct Process* newProcess = (struct Process*)malloc(sizeof(struct Process));
   // create a new Event
@@ -69,6 +71,9 @@ void createNewProcess(Event event, int timeStamp) {
 
   // add event to the event queue
   add(newEvent);
+
+  stats -> total_event_queue_lengths = stats -> total_event_queue_lengths + sizePQ();
+  stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 }
 
 void schedulingDecision(Event event, int contextSwitch, Struct CPUs, int numCPUs, int quantum) {
@@ -99,6 +104,8 @@ void schedulingDecision(Event event, int contextSwitch, Struct CPUs, int numCPUs
 
         // put onto the event queue
         add(newEvent);
+        stats -> total_event_queue_lengths = stats -> total_event_queue_lengths + sizePQ();
+        stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 
       } else if ( (process -> burst_time) < quantum){
         // check to see if the process on the CPU should go to IO
@@ -107,6 +114,8 @@ void schedulingDecision(Event event, int contextSwitch, Struct CPUs, int numCPUs
         newEvent -> process -> CPU_running_on = i;
         // put onto the event queue
         add(newEvent);
+        stats -> total_event_queue_lengths = stats -> total_event_queue_lengths + sizePQ();
+        stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 
       } else if ( (process -> cpu_service_time_remaining) > (process -> burst_time) > quantum ) {
         // check to see if the process on the CPU quantum expires
@@ -115,6 +124,8 @@ void schedulingDecision(Event event, int contextSwitch, Struct CPUs, int numCPUs
         newEvent -> process -> CPU_running_on = i;
         // put onto the event queue
         add(newEvent);
+        stats -> total_event_queue_lengths = stats -> total_event_queue_lengths + sizePQ();
+        stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
       }
     }
   }
@@ -149,6 +160,8 @@ void removeProcess(int type, Event event, Struct CPUs, int contextSwitch) {
       free(event);
       // enqueue onto the event queue
       add(newEvent);
+      stats -> total_event_queue_lengths = stats -> total_event_queue_lengths + sizePQ();
+      stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
       break;
 
     // quantum expire
@@ -163,7 +176,9 @@ void removeProcess(int type, Event event, Struct CPUs, int contextSwitch) {
 
       free(event);
       // go back to the event queue
-      add(newEvent)
+      add(newEvent);
+      stats -> total_event_queue_lengths = stats -> total_event_queue_lengths + sizePQ();
+      stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
       break;
   }
 
