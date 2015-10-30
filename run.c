@@ -196,7 +196,7 @@ Process generateRandomValues(int processType, Process process) {
     // first process type
     case 1:
       // calculte CPU service time
-      // process -> cpu_service_time =
+      // process -> cpu_service_time = exponential_distribution
       // calculate burst time
 
       // calculate interarrival time
