@@ -4,32 +4,32 @@
 #include "run.h"
 
 //queue pointers
-struct Process *QUEUE_HEAD = NULL;
-struct Process *QUEUE_TAIL = NULL;
+struct Event *QUEUE_HEAD = NULL;
+struct Event *QUEUE_TAIL = NULL;
 int QUEUE_SIZE = 0;
 
 
 /**
 * Method to add a node to the queue at the back of it.
 **/
-void enqueue (struct Process *newProcess) {
+void enqueue (struct Event *newEvent) {
     int new_value;
 	printf("Enqueueing element: %d\n", new_value);
 	// create a new node with the size of a Node
-	struct Process* newProcess = (struct Process*)malloc(sizeof(struct Process));
+	newEvent = (struct Event*)malloc(sizeof(struct Event));
 
 	// save the next within the node as null i.e it's now the last node
-	newProcess -> next = NULL;
+	newEvent -> next = NULL;
 
 	// save the value as passed to the value in the node
-	//newNode -> value = new_value;
+	newEvent -> type = new_value;
 
 	// if we have no other nodes in our list currently i.e head is null
 	if(QUEUE_HEAD == NULL) {
 		// new node is the head
-		QUEUE_HEAD = newProcess;
+		QUEUE_HEAD = newEvent;
 		// new node is also the tail
-		QUEUE_TAIL = newProcess;
+		QUEUE_TAIL = newEvent;
 
 		QUEUE_SIZE = QUEUE_SIZE + 1;
 
@@ -37,10 +37,10 @@ void enqueue (struct Process *newProcess) {
 	}
 
 	// tail now points to the new value node
-	QUEUE_TAIL -> next = newProcess;
+	QUEUE_TAIL -> next = newEvent;
 
 	// tail is now the new node
-	QUEUE_TAIL = newProcess;
+	QUEUE_TAIL = newEvent;
 
 	QUEUE_SIZE = QUEUE_SIZE + 1;
 }
@@ -52,7 +52,7 @@ void dequeue() {
 	printf("Dequeueing element");
 	// save the value of the head before the dequeue begins
 	// going to print the value of the currentHead after you remove it from the list
-	struct Process* headToBeRemoved = QUEUE_HEAD;
+	struct Event* headToBeRemoved = QUEUE_HEAD;
 
 	// if the list is empty
 	// i.e head is equal to null
@@ -94,10 +94,10 @@ int sizeQ() {
 * Method that prints out the queue
 **/
 void printQueue() {
-	struct Process* newHead = QUEUE_HEAD;
+	struct Event* newHead = QUEUE_HEAD;
 	printf("Your Queue: ");
 	while(newHead != NULL) {
-		printf(" %d", newHead -> cpu_service_time);
+		printf(" %d", newHead -> type);
 		newHead = newHead -> next;
 	}
 	printf("\n");
@@ -118,9 +118,9 @@ int isEmpty() {
 * Method to clear the queue completely
 **/
 void clearQueue() {
-	struct Process* temp = QUEUE_HEAD;
+	struct Event* temp = QUEUE_HEAD;
 	while(temp != NULL) {
-		struct Process* nodeToRemove = temp;
+		struct Event* nodeToRemove = temp;
 		temp = temp -> next;
 		free(nodeToRemove);
 	}

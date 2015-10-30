@@ -12,7 +12,7 @@ int size = 0;
 //allocate memory to temp1 and set it's data and priority to be the same as the element to be inserted
 //if the Queue is empty or if the priority of the element to be inserted is higher, add temp1 before the head and set it as the head
 //if the Queue is not empty and the priority of the new element is lower than the head's, then traverse through the Queue until the correct position for its priority is found
-void insert(struct Event* newEvent)
+void add(struct Event* newEvent)
 {
     int newElement;
     int eventPriority;

@@ -3,7 +3,7 @@
 struct Event {
   int timeStamp;
   int type;
-  struct Event* next;
+  struct Event *next;
     // create a process of x type == 1
     // schedulingDecision = 2
     // remove a process
@@ -35,14 +35,14 @@ struct Process {
 
   int CPU_running_on;
     
-    struct Process* next;
+  struct Process *next;
     
 };
 
 struct CPU {
   // 0 = idle
   // 1 = busy
-  int idle = 0;
+  int idle;
 };
 
 struct Statistics {
@@ -60,9 +60,14 @@ struct Statistics {
   int num_ready_queue_changed;
 };
 
+void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum);
 
-void createEvent(timeStamp, type, process);
+void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats);
 
-void removeProcess();
+void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs, int numCPUs, int quantum);
 
-void generateRandomValues();
+void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextSwitch);
+
+struct Process generateRandomValues(int processType, struct Process *process);
+
+
