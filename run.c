@@ -3,6 +3,10 @@
 #include "run.h"
 
 int clock_time = 0;
+
+int main() {
+
+}
 //one cannot return array in C, only a pointer to the array
 void initializeCPUS(struct CPU *cpu) {
   //struct CPU cpu;
@@ -32,7 +36,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   while (clock_time <= runtime) {
     // if there are events in the queue...
       // DEQUEUE an event from the event queue
-      struct Event *event = removeNode();
+      struct Event *event = dequeue();
 
       // UPDATE clock to the priority of the dequeued event
       clock_time = event -> timeStamp;
