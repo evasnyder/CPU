@@ -4,8 +4,7 @@ struct Event {
   int timeStamp;
   int type;
     // create a process of x type == 1
-    // go to ready queue = 2
-    // go to CPU = 3
+    // schedulingDecision = 2
     // remove a process
       // terminate == 4
       // go to IO == 5
@@ -32,6 +31,8 @@ struct Process {
 
   // how much cpu service time there is left for the process
   int cpu_service_time_remaining;
+
+  int CPU_running_on;
 };
 
 struct CPU {
