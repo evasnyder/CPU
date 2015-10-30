@@ -50,6 +50,13 @@ int main(int argc, char **argv) {
     for (i=0;i<15; ++i)
         printf("%s\n", array[i]);
     
+
+    //type in commands in the command line separated by space 
+    //read file and save the values from the file and the command line to variables
+    //add the variables 
+    //create process: event move to ready queue
+    //round robin scheduling 
+
 }
 
 

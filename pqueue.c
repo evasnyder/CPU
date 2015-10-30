@@ -2,50 +2,64 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+<<<<<<< HEAD
 #include "pqueue.h"
+=======
+#include "priorityQueue.h"
+#include "run.h"
+>>>>>>> origin/master
 
-struct Node *HEAD = NULL;
-struct Node *TAIL = NULL;
+struct Event *HEAD = NULL;
+struct Event *TAIL = NULL;
 int SIZE = 0;
+
+
+int main() {
+
+
+
+}
+
+
 
 /**
 *  Method to add a new node to the queue which takes in a value and a priority
 **/
-int add (int new_value, int new_priority) {
-	printf("Adding element: %d\n", new_priority);
+int add (struct Event *newEvent) {
+	//printf("Adding element: %d\n", new_priority);
 	// create a new node with the size of a Node
-	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+	struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
 	// save the value as passed to the value in the node
-	newNode -> value = new_value;
-	newNode -> priority = new_priority;
+	newEvent-> value = new_value;
+	newEvent -> timestamp = new_priority;
 	// save the next within the node as null i.e it's now the last node
-	newNode -> next = NULL;
+	newEvent -> next = NULL;
 
 	// if we have no other nodes in our list currently i.e head is null
 	if (HEAD == NULL) {
 		// new node is the head
-		HEAD = newNode;
+		HEAD = newEvent;
 		// new node is also the tail
-		TAIL = newNode;
+		TAIL = newEvent;
 
 		SIZE = SIZE + 1;
 		return 1;
 	} else if(HEAD -> priority < new_priority) {
 		// if our new priority should be the first in the list
 		// i.e if the head priority is less than our new one
-		newNode -> next = HEAD;
-		HEAD = newNode;
+		newEvent -> next = HEAD;
+		HEAD = newEvent;
 		SIZE = SIZE + 1;
 		return 1;
 	} else if(TAIL -> priority > new_priority) {
-			TAIL -> next = newNode;
-			TAIL = newNode;
+			TAIL -> next = newEvent;
+			TAIL = newEvent;
 			SIZE = SIZE + 1;
 	}
 	else {
-		struct Node* newHead = HEAD;
+		struct Event* newHead = HEAD;
 		if(newHead -> next == NULL) {
-			HEAD -> next = newNode;
+			HEAD -> next = newEvent;
 			TAIL = newNode;
 		}
 		else {
