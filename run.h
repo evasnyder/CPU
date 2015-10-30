@@ -34,9 +34,9 @@ struct Process {
   int cpu_service_time_remaining;
 
   int CPU_running_on;
-    
+
   struct Process *next;
-    
+
 };
 
 struct CPU {
@@ -64,10 +64,8 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum);
 
 void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats);
 
-void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs, int numCPUs, int quantum);
+void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs, int numCPUs, int quantum, struct Statistics *stats);
 
 void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextSwitch);
 
 struct Process generateRandomValues(int processType, struct Process *process);
-
-
