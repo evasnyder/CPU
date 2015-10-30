@@ -60,6 +60,11 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
   // set its values to the right things
     // io service, interarrival, burst, cpu service
 
+  struct Event* interarrivalProcessTime = (struct Event*)malloc(sizeof(struct Event));
+  interarrivalProcessTime = clock_time + newProcess -> interarrival;
+  interarrivalProcessTime -> type = 1;
+  enqueue(interarrivalProcessTime);
+
   free(event);
 
   // set the event type - scheduling decision
