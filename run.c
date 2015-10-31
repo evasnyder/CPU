@@ -68,6 +68,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
         }
         // UPDATE clock to the priority of the dequeued event
         clock_time = event -> timeStamp;
+        printf("******** CLOCK TIME ********** %d\n", clock_time);
 
         if(event -> type == 1) {
           printf("event type is to create a new process\n");
@@ -109,7 +110,7 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
   // create a new Event
   struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
 
-  newProcess = generateRandomValues(process_type, *newProcess);
+  newProcess = generateRandomValues(process_type, newProcess);
   newProcess -> start_time = clock_time;
 
   printf("still going...\n");
@@ -145,6 +146,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
   int i;
   for (i = 0; i < numCPUs; i++) {
     if (CPUs[i].idle == 0) {
+      printf("CPUs are idleeeeeeeeee\n");
       struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
       struct Process* tempProcess = (struct Process*)malloc(sizeof(struct Process));
       tempProcess = event -> process;
@@ -159,9 +161,11 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
       // generate a new event to remove it from the CPU
 
       if ( (newEvent -> process -> cpu_service_time_remaining) < quantum ) {
+        printf("remove from CPU because of quantum\n");
         // check to see if the process on the CPU should be terminated next
         // generate the time that the process should be terminated at
         newEvent -> timeStamp = clock_time + (newEvent -> process  -> cpu_service_time_remaining);
+        printf("$$$$$$$NEW TIME STAMP$$$$$$ %d\n", newEvent -> timeStamp);
         newEvent -> type = 4;
         newEvent -> process  -> CPU_running_on = i;
 
@@ -171,9 +175,11 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 
       } else if ( (newEvent -> process  -> burst_time) < quantum){
+        printf("remove from cpu because of the burst time \n");
         // check to see if the process on the CPU should go to IO
-
+        printf("process burst time %d\n", newEvent -> process -> burst_time);
         newEvent -> timeStamp = clock_time + (newEvent -> process -> burst_time);
+        printf("new event time stamp **************** %d\n", newEvent -> timeStamp);
         newEvent -> type = 5; // return from IO aka go back to ready queue
         newEvent -> process -> CPU_running_on = i;
         // put onto the event queue
@@ -182,6 +188,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 
       } else if ( (newEvent -> process -> cpu_service_time_remaining) > (newEvent -> process  -> burst_time) > quantum ) {
+        printf("remove from cpu because of something.....\n");
         // check to see if the process
         // on the CPU quantum expires
         newEvent -> timeStamp = clock_time + quantum + contextSwitch;
@@ -320,32 +327,33 @@ void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArriva
 * 1 =
 * 2 =
 */
-struct Process* generateRandomValues(int processType, struct Process process) {
+struct Process* generateRandomValues(int processType, struct Process* process) {
 
   switch(processType){
     // batch
     case 1:
       // calculte CPU service time
-      process.cpu_service_time = *exponential_distribution((avgBatchValues -> cpuTime));
+      process -> cpu_service_time = *exponential_distribution((avgBatchValues -> cpuTime));
+      printf("process cpu service time: %d\n", process -> cpu_service_time);
       // calculate burst time
-      process.burst_time = *exponential_distribution((avgBatchValues -> burstTime));
+      process -> burst_time = *exponential_distribution((avgBatchValues -> burstTime));
       // calculate interarrival time
-      process.interarrival_time = *exponential_distribution((avgBatchValues -> interArrTime));
+      process -> interarrival_time = *exponential_distribution((avgBatchValues -> interArrTime));
       // calculate IO service time
-      process.IO_Service = *exponential_distribution((avgBatchValues -> IOTime));
+      process -> IO_Service = *exponential_distribution((avgBatchValues -> IOTime));
 
-      return &process;
+      return process;
 
     // interactive
     case 2:
       // calculte CPU service time
-      process.cpu_service_time = *exponential_distribution((avgInteractiveValues -> cpuTime));
+      process -> cpu_service_time = exponential_distribution((avgInteractiveValues -> cpuTime));
       // calculate burst time
-      process.burst_time = *exponential_distribution((avgInteractiveValues -> burstTime));
+      process -> burst_time = exponential_distribution((avgInteractiveValues -> burstTime));
       // calculate interarrival time
-      process.interarrival_time = *exponential_distribution((avgInteractiveValues -> interArrTime));
+      process -> interarrival_time = exponential_distribution((avgInteractiveValues -> interArrTime));
       // calculate IO service time
-      process.IO_Service = *exponential_distribution((avgInteractiveValues -> IOTime));
-      return &process;
+      process -> IO_Service = exponential_distribution((avgInteractiveValues -> IOTime));
+      return process;
   }
 }

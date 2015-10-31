@@ -85,7 +85,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
 
 void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextSwitch, struct Statistics *stats);
 
-struct Process* generateRandomValues(int processType, struct Process process);
+struct Process* generateRandomValues(int processType, struct Process* process);
 
 void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArrival, int avgIO);
 
