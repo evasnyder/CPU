@@ -19,7 +19,17 @@ void initializeCPUS(struct CPU *cpu) {
 
 void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
+  printf("ENTERING RUN \n");
+  printf("Run Time %d\n", runtime);
+  printf("numCPUS %d\n", numCPUS);
+  printf("contextSwitch %d\n", contextSwitch);
+  printf("quantum %d\n", quantum);
+
+  int beginning = 1;
+
   struct Statistics* stats = (struct Statistics*)malloc(sizeof(struct Statistics));
+
+  printf("made stats\n");
 
   // create an array of structs for the CPUS
   struct CPU cpu_array[numCPUS];
@@ -27,6 +37,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   int i;
   for ( i = 0; i < numCPUS; ++i)
   {
+    printf("initializing CPU\n");
      //cpu_array[i] = *(struct CPU*)malloc(sizeof(struct CPU));
      //cpu_array->idle = 0;
     initializeCPUS(&cpu_array[i]);
@@ -34,24 +45,40 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
   }
 
+  printf("after for loop\n");
+
   // while there is still runtime left in the CPU
   while (clock_time <= runtime) {
+    printf("In the while loop \n");
+
     // if there are events in the queue...
       // DEQUEUE an event from the event queue
-      struct Event *event = dequeue();
+      if(!isEmptyPQ()) {
+        printf("queue is not empty\n");
+        int event = delete();
+        printf("Event type %d\n", event);
+        // UPDATE clock to the priority of the dequeued event
+        clock_time = event -> timeStamp;
 
-      // UPDATE clock to the priority of the dequeued event
-      clock_time = event -> timeStamp;
-
-      if(event -> type == 1) {
-        // create a new process
-        createNewProcess(event, clock_time, stats, event -> process_type);
-      } else if (event -> type == 2) {
-        schedulingDecision(event, contextSwitch, cpu_array, numCPUS, quantum, stats);
-      } else if (event -> type == 4 || event -> type == 5 || event -> type == 6) {
-        removeProcess(event -> type, event, cpu_array, contextSwitch, stats);
+        if(event == 1) {
+          printf("event type is to create a new process\n");
+          // create a new process
+          createNewProcess(event, clock_time, stats, event -> process_type);
+        } else if (event == 2) {
+          printf("event type is to make a decision\n");
+          schedulingDecision(event, contextSwitch, cpu_array, numCPUS, quantum, stats);
+        } else if (event == 4 || event == 5 || event == 6) {
+          printf("event type is to remove something from the CPU\n");
+          removeProcess(event, event, cpu_array, contextSwitch, stats);
+        } else {
+          return;
+        }
       } else {
-        return;
+          if(beginning = 1) {
+            // struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
+            // createNewProcess(newEvent, clock_time, stats, newEvent -> process_type);
+            beginning = 0;
+          }
       }
   }
 
@@ -225,11 +252,18 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
 
 //method to save processes data from the input file
 void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArrival, int avgIO) {
+  printf("Saving Average Values! \n");
   avgBatchValues = (struct batch*)malloc(sizeof(struct batch));
   avgInteractiveValues = (struct interactive*)malloc(sizeof(struct interactive));
+  struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
 
   switch (process_type) {
     case 1:
+      printf("Hey I'm a batch....\n");
+      newEvent -> type = 1;
+      newEvent -> process_type = 1;
+      printf("adding new event from save avg values\n");
+      add(newEvent);
       // batch
       avgBatchValues -> cpuTime = avgCPU;
       avgBatchValues -> burstTime = avgBurst;
@@ -242,6 +276,8 @@ void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArriva
       avgBatchValues -> avgTurnaroundTime = 0;
       break;
     case 2:
+      newEvent -> type = 1;
+      newEvent -> process_type = 2;
       // interactive
       avgInteractiveValues -> cpuTime = avgCPU;
       avgInteractiveValues -> burstTime = avgBurst;

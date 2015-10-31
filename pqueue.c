@@ -56,7 +56,7 @@ int getFirst()
 //declare an int variable and save head's data to it
 //set the second Node in the Queue (the one after the head) as the head and free temp's memory to get rid of the previous head in memory
 //return the data of the deleted head
-int delete()
+struct Event* delete()
 {
 	struct Event* temp;
 	int event;
