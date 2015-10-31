@@ -158,6 +158,10 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
       // mark the CPU as full
       CPUs[i].idle = 1;
 
+      printf("Event CPU Service Time Remaining %d\n", event -> process -> cpu_service_time_remaining);
+      printf("Event Burst Time %d\n", event -> process -> burst_time);
+      printf("Quantum%d\n", quantum);
+
       // generate a new event to remove it from the CPU
 
       if ( (event -> process -> cpu_service_time_remaining) < quantum ) {
@@ -174,7 +178,6 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
         stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
-
       } else if ( (event -> process -> burst_time) < quantum){
         printf("remove from cpu because of the burst time \n");
         // check to see if the process on the CPU should go to IO
@@ -188,8 +191,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
         stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
-
-      } else if ( (event -> process -> cpu_service_time_remaining) > (event -> process  -> burst_time) > quantum ) {
+      } else if ( (event -> process -> cpu_service_time_remaining) > quantum ) {
         printf("remove from cpu because of something.....\n");
         // check to see if the process
         // on the CPU quantum expires
@@ -201,6 +203,8 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
         stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
+      } else {
+        printf("UGH UGH UHG UGH UGH\n");
       }
     }
   }
@@ -340,10 +344,13 @@ struct Process* generateRandomValues(int processType, struct Process* process) {
       printf("process cpu service time: %d\n", process -> cpu_service_time);
       // calculate burst time
       process -> burst_time = *exponential_distribution((avgBatchValues -> burstTime));
+      printf("process burst time: %d\n", process -> burst_time);
       // calculate interarrival time
       process -> interarrival_time = *exponential_distribution((avgBatchValues -> interArrTime));
+      printf("process interarrival time: %d\n", process -> interarrival_time);
       // calculate IO service time
       process -> IO_Service = *exponential_distribution((avgBatchValues -> IOTime));
+      printf("process IO Service Time: %d\n", process -> IO_Service);
 
       process -> cpu_service_time_remaining = process -> cpu_service_time;
 
