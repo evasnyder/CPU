@@ -36,6 +36,8 @@ struct Process {
 
   int CPU_running_on;
 
+  int start_time;
+
   struct Process *next;
 
 };

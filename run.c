@@ -74,6 +74,7 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
   struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
 
   newProcess = generateRandomValues(process_type, *newProcess);
+  newProcess -> start_time = clock_time;
 
   struct Event* interarrivalProcessTime = (struct Event*)malloc(sizeof(struct Event));
   interarrivalProcessTime = clock_time + newProcess -> interarrival_time;
@@ -159,6 +160,24 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
   switch(type) {
     // terminate
     case 4:
+      switch(event->process_type) {
+        case 1:
+          // batch process
+          avgBatchValues -> numCompleted = avgBatchValues -> numCompleted + 1;
+          // if the process that just finished was running for the longest time
+          if (clock_time - (event -> process -> start_time) > avgBatchValues -> longestProcessTime) {
+            avgBatchValues -> longestProcessTime = (clock_time - (event->process->start_time));
+          }
+          break;
+        case 2:
+          // batch process
+          avgInteractiveValues -> numCompleted = avgInteractiveValues -> numCompleted + 1;
+          if (clock_time - (event -> process -> start_time) > avgInteractiveValues -> longestProcessTime) {
+            avgInteractiveValues -> longestProcessTime = (clock_time - (event->process->start_time));
+          }
+          break;
+      }
+
       // update statistics
       CPUs[event -> process -> CPU_running_on].idle= 0;
       free(event);
