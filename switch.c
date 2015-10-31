@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
     char *processType;
     int processTypeInt;
     int numCPU;
+    int contextSwitch;
     //char* avgCPUTime;
     //int avgBurstTime;
     //int avgInterArrivalTime;
@@ -55,7 +56,7 @@ int main(int argc, char *argv[]) {
                  break;
              case 't' : stopTime = atoi(optarg);
                  break;
-              case 'w' : //get context switch cost
+              case 'w' : contextSwitch = atoi(optarg); //get context switch cost
                  break;
               case 'n' : //disable I/O faults
                  break;
@@ -77,25 +78,29 @@ int main(int argc, char *argv[]) {
      printf("Quantum: %d\n",quantum); 
      printf("Stop Time: %d\n",stopTime); 
 
-     int i = 0;
-      const char *format = '%d';
-    fp = fopen(fileName, "r");
-     char  line[255];
+     saveAvgValue(1, 500, 200, 1000, 10);
+
+     runCPU(stopTime, numCPU, contextSwitch, quantum);
+
+//      int i = 0;
+//       const char *format = '%d';
+//     fp = fopen(fileName, "r");
+//      char  line[255];
 
     
-    while (fgets(line, sizeof(line), fp) != NULL)
-    {
-        //char val1[20] = strtok(line, ",");
-        const char* processType = strtok(line, " ");
-        const char* avgCPUTime = strtok(NULL, " ");
-        const char* avgBurstTime = strtok(NULL, " ");
-        const char* avgInterArrivalTime = strtok(NULL, " ");
-        const char* avgIOTime = strtok(NULL, " ");
+//     while (fgets(line, sizeof(line), fp) != NULL)
+//     {
+//         //char val1[20] = strtok(line, ",");
+//         const char* processType = strtok(line, " ");
+//         const char* avgCPUTime = strtok(NULL, " ");
+//         const char* avgBurstTime = strtok(NULL, " ");
+//         const char* avgInterArrivalTime = strtok(NULL, " ");
+//         const char* avgIOTime = strtok(NULL, " ");
 
-        printf("%s%s\n","Chosen process: ",processType  );
-        printf("%s%s\n","Chosen process cpu time: ",avgCPUTime );
-        printf("%s%s\n","Chosen process burst time:",avgBurstTime );
+//         printf("%s%s\n","Chosen process: ",processType  );
+//         printf("%s%s\n","Chosen process cpu time: ",avgCPUTime );
+//         printf("%s%s\n","Chosen process burst time:",avgBurstTime );
         
-    return 0;
-}
+//     return 0;
+// }
 }
