@@ -15,7 +15,7 @@ int size = 0;
 void add(struct Event* newEvent)
 {
     //int newElement;
-    //int eventPriority;
+    //int eventPriority  hy;
 	struct Event* temp1;
 	struct Event* temp2;
 
@@ -24,7 +24,7 @@ void add(struct Event* newEvent)
 	temp1 = (struct Event*)malloc(sizeof(struct Event));
 
 	//newEvent->type = newElement;
-	//newEvent->timeStamp = eventPriority;
+	//newEvent->timeStamp = eventPriority          ;
 
 	//if the Queue is empty of if the element that is being inserted has a higher priority
 	if (isEmptyPQ() || newEvent->timeStamp < head->timeStamp)
