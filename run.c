@@ -71,6 +71,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
         if(event -> type == 1) {
           printf("event type is to create a new process\n");
+          printf("event process type: %d\n", event -> process_type);
           // create a new process
           createNewProcess(event, clock_time, stats, event -> process_type);
         } else if (event -> type == 2) {
@@ -102,6 +103,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
 
 void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats, int process_type) {
+  printf("Create a New Process...\n");
   // create a new Process
   struct Process *newProcess = (struct Process*)malloc(sizeof(struct Process));
   // create a new Event
@@ -110,21 +112,27 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
   newProcess = generateRandomValues(process_type, *newProcess);
   newProcess -> start_time = clock_time;
 
-  struct Event* interarrivalProcessTime = (struct Event*)malloc(sizeof(struct Event));
-  interarrivalProcessTime = clock_time + newProcess -> interarrival_time;
-  interarrivalProcessTime -> type = 1;
-  interarrivalProcessTime -> process_type = process_type;
-  enqueue(interarrivalProcessTime);
+  printf("still going...\n");
 
+  struct Event* interarrivalProcessTime = (struct Event*)malloc(sizeof(struct Event));
+
+  interarrivalProcessTime -> timeStamp = clock_time + newProcess -> interarrival_time;
+  printf("interarrival process time %d\n", interarrivalProcessTime -> timeStamp);
+  interarrivalProcessTime -> type = 1;
+  printf("interarrival type %d\n", interarrivalProcessTime -> type);
+  interarrivalProcessTime -> process_type = process_type;
+  printf("interarrivel process type %d\n", interarrivalProcessTime -> process_type);
+  enqueue(interarrivalProcessTime);
+  printf("woohoo still working...\n");
   free(event);
 
   // set the event type - scheduling decision
   newEvent -> type = 2;
   newEvent -> process = newProcess;
-
+  printf("we made it this far\n");
   // add event to the event queue
   add(newEvent);
-
+  printf("yaaaaay\n");
   stats -> total_event_queue_lengths = stats -> total_event_queue_lengths + sizePQ();
   stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 }
