@@ -13,8 +13,8 @@ int QUEUE_SIZE = 0;
 * Method to add a node to the queue at the back of it.
 **/
 void enqueue (struct Event *newEvent) {
-    int new_value;
-	printf("Enqueueing element: %d\n", new_value);
+  int new_value;
+	printf("Enqueueing element: %d\n", newEvent -> type);
 	// create a new node with the size of a Node
 	newEvent = (struct Event*)malloc(sizeof(struct Event));
 
