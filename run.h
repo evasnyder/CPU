@@ -44,6 +44,11 @@ struct CPU {
   // 0 = idle
   // 1 = busy
   int idle;
+
+  // STATISTICS
+  int active_time;
+  int context_switch_time;
+  int idle_time;
 };
 
 struct Statistics {
@@ -63,9 +68,11 @@ struct Statistics {
 
 struct batch {
   int cpuTime, burstTime, interArrTime, IOTime;
+  int numCompleted, throughput, lastProcessTime, longestProcessTime, avgTurnaroundTime;
 };
 struct interactive {
   int cpuTime, burstTime, interArrTime, IOTime;
+  int numCompleted, throughput, lastProcessTime, longestProcessTime, avgTurnaroundTime;
 };
 
 void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum);

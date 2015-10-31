@@ -218,6 +218,11 @@ void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArriva
       avgBatchValues -> burstTime = avgBurst;
       avgBatchValues -> interArrTime = avgInterArrival;
       avgBatchValues -> IOTime = avgIO;
+      avgBatchValues -> numCompleted = 0;
+      avgBatchValues -> throughput = 0;
+      avgBatchValues -> lastProcessTime = 0;
+      avgBatchValues -> longestProcessTime = 0;
+      avgBatchValues -> avgTurnaroundTime = 0;
       break;
     case 2:
       // interactive
@@ -225,6 +230,11 @@ void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArriva
       avgInteractiveValues -> burstTime = avgBurst;
       avgInteractiveValues -> interArrTime = avgInterArrival;
       avgInteractiveValues -> IOTime = avgIO;
+      avgInteractiveValues -> numCompleted = 0;
+      avgInteractiveValues -> throughput = 0;
+      avgInteractiveValues -> lastProcessTime = 0;
+      avgInteractiveValues -> longestProcessTime = 0;
+      avgInteractiveValues -> avgTurnaroundTime = 0;
       break;
   }
 }
