@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
         {"numCPU",      required_argument, 0,  'c' },
         {"quantum", required_argument,       0,  'q' },
         {"simulationStopTime",   required_argument, 0,  't' },
-        {"switchTime", required_argument,       0,  't' },
+        {"switchTime", required_argument,       0,  'w' },
         {"noIOFaults",   no_argument, 0,  'n' },
         {"verbose", no_argument,       0,  'v' },
         {"batch",   no_argument, 0,  'b' },
