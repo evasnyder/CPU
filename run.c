@@ -56,7 +56,10 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
       if(isEmptyPQ() == 0) {
         printf("queue is not empty\n");
       //  struct Event *event = deletePQ();
-        struct Event *event = deletePQ();
+        struct Event *event = (struct Event*)malloc(sizeof(struct Event));
+        event -> type = 0;
+        printf("eh: %d\n", event->type);
+        event = deletePQ();
         if(event == NULL) {
           printf("event is null\n");
         } else {
