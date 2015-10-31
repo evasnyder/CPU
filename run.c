@@ -32,7 +32,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
      //cpu_array[i] = *(struct CPU*)malloc(sizeof(struct CPU));
      //cpu_array->idle = 0;
     initializeCPUS(&cpu_array[i]);
-     printf( "r[%d] = %d\n", i, cpu_array[i]);
+    //  printf( "r[%d] = %d\n", i, cpu_array[i]);
 
   }
 
@@ -73,10 +73,7 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
   // create a new Event
   struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
 
-  // know the average values, use those average values to make own values
-  // set its values to the right things
-    // io service, interarrival, burst, cpu service
-
+  newProcess = generateRandomValues(process_type, newProcess);
 
   struct Event* interarrivalProcessTime = (struct Event*)malloc(sizeof(struct Event));
   interarrivalProcessTime = clock_time + newProcess -> interarrival_time;
