@@ -175,14 +175,15 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
         stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 
-      } else if ( (event -> process  -> burst_time) < quantum){
+      } else if ( (event -> process -> burst_time) < quantum){
         printf("remove from cpu because of the burst time \n");
         // check to see if the process on the CPU should go to IO
         printf("process burst time %d\n", newEvent -> process -> burst_time);
-        newEvent -> timeStamp = clock_time + (newEvent -> process -> burst_time);
+        newEvent -> timeStamp = clock_time + (event -> process -> burst_time);
         printf("new event time stamp **************** %d\n", newEvent -> timeStamp);
         newEvent -> type = 5; // return from IO aka go back to ready queue
         newEvent -> process -> CPU_running_on = i;
+        newEvent -> process -> cpu_service_time_remaining = (event -> process -> cpu_service_time_remaining) - (event -> process -> burst_time);
         // put onto the event queue
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
@@ -195,6 +196,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         newEvent -> timeStamp = clock_time + quantum + contextSwitch;
         newEvent -> type = 6;
         tempProcess -> CPU_running_on = i;
+        newEvent -> process -> cpu_service_time_remaining = (event -> process -> cpu_service_time_remaining) + quantum + contextSwitch;
         // put onto the event queue
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
