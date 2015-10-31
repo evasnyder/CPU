@@ -55,21 +55,21 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
       // DEQUEUE an event from the event queue
       if(!isEmptyPQ()) {
         printf("queue is not empty\n");
-        int event = delete();
-        printf("Event type %d\n", event);
+        struct Event *event = delete();
+        printf("Event type %d\n", event -> type);
         // UPDATE clock to the priority of the dequeued event
         clock_time = event -> timeStamp;
 
-        if(event == 1) {
+        if(event -> type == 1) {
           printf("event type is to create a new process\n");
           // create a new process
           createNewProcess(event, clock_time, stats, event -> process_type);
-        } else if (event == 2) {
+        } else if (event -> type == 2) {
           printf("event type is to make a decision\n");
           schedulingDecision(event, contextSwitch, cpu_array, numCPUS, quantum, stats);
-        } else if (event == 4 || event == 5 || event == 6) {
+        } else if (event -> type == 4 || event -> type == 5 || event -> type == 6) {
           printf("event type is to remove something from the CPU\n");
-          removeProcess(event, event, cpu_array, contextSwitch, stats);
+          removeProcess(event -> type, event, cpu_array, contextSwitch, stats);
         } else {
           return;
         }

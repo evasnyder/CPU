@@ -71,7 +71,7 @@ struct Event* delete()
 		temp = head;
 		event = temp->type;
 		head = head->next;
-		free(temp);
+		// free(temp);
         if (size != 0)
         {
             size = size -1;
@@ -79,7 +79,9 @@ struct Event* delete()
 	}
 
 	printf("%s %d %s", "Deleted:", event, "\n");
-	return event;
+  printf("hello\n");
+  printf("temp type %d\n", temp -> type);
+	return temp;
 }
 
 int sizePQ()
