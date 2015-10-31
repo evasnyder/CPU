@@ -113,7 +113,9 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   stats -> final_len_ready_queue = sizeQ();
   printf("final ready queue length %d\n", stats -> final_len_ready_queue);
   stats -> avg_len_event_queue = (stats -> total_event_queue_lengths) / (float)(stats -> num_event_queue_changed);
+  printf("average length event queue %d\n", stats -> avg_len_event_queue);
   stats -> avg_len_ready_queue = (stats -> total_ready_queue_lengths) / (float)(stats -> num_ready_queue_changed);
+  printf("average length ready queue %d\n", stats -> avg_len_ready_queue);
 
 }
 
