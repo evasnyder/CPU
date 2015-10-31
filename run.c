@@ -49,6 +49,8 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
   // while there is still runtime left in the CPU
   while (clock_time <= runtime) {
+    printf("IN WHILE LOOP*******************************\n");
+    printf("CLOCK TIME: %d\n", clock_time);
 
     if(clock_time > runtime) {
       printf("******************* DONE BITCHESSSSS ****************** \n");
@@ -86,11 +88,11 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
         } else if (event -> type == 4 || event -> type == 5 || event -> type == 6) {
           printf("event type is to remove something from the CPU\n");
           removeProcess(event -> type, event, cpu_array, contextSwitch, stats);
-        } else {
-          return;
         }
-      } 
+      }
   }
+
+  printf("******************** Operation Succesful ************************\n");
 
   stats -> len_simulation_time = runtime;
   stats -> final_len_event_queue = sizePQ();
