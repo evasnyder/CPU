@@ -58,8 +58,7 @@ int main(int argc, char *argv[]) {
                  break;
              case 't' : stopTime = atoi(optarg);
                  break;
-              case 'w' : contextSwitch = atoi(optarg);
-              //get context switch cost
+              case 'w' : contextSwitch = atoi(optarg); //get context switch cost
                  break;
               case 'n' : //disable I/O faults
                  break;
