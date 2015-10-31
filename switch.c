@@ -95,58 +95,6 @@ int main(int argc, char *argv[]) {
         printf("%s%s\n","Chosen process: ",processType  );
         printf("%s%s\n","Chosen process cpu time: ",avgCPUTime );
         printf("%s%s\n","Chosen process burst time:",avgBurstTime );
-        // if(strcmp(processType, "2") == 0)
-        // {
-        //     printf("%s%d", "Number of Processes: ", processType);
-        // }
-        // else if (strcmp(processType, "interactive") == 0) {
-        //     processTypeInt = 2;
-        //     printf("%s%d\n%s%d\n%s%d\n%s%d\n%s%d\n","Process type: ", processType, "Average CPU Time: ", 
-        //         avgCPUTime, "Average Burst Time: ", avgBurstTime,
-        //          "Average InterArrival Time: ", avgInterArrivalTime, "Average I/O Time: ", avgIOTime);
-
-        // }
-        // else if (strcmp(processType, "batch") == 0) {
-        //     processTypeInt = 1;
-        // }
         
-
-        //printf("%s%d\n","Process type: ", processTypeInt);
-    }
-
-    //  char *val1[10];
-    // (fgets(line, sizeof(line), fp));
-    // val1[i] = strtok(line," ");
-
-    // while(val1[i]!=NULL)
-    // {
-    //    val1[++i] = strtok(NULL,"/");
-    //    printf("%s\n", val1[++i]);
-    // }
-
-
-
-    //call createNewProcess
-    //
-
-
-
-
-    // if (length == -1 || breadth ==-1) {
-    //     print_usage();
-    //     exit(EXIT_FAILURE);
-    // }
-
-    // // Calculate the area
-    // if (area == 0) {
-    //     area = length * breadth;
-    //     printf("Area: %d\n",area);
-    // }
-
-    // // Calculate the perimeter
-    // if (perimeter == 0) {
-    //     perimeter = 2 * (length + breadth);
-    //     printf("Perimeter: %d\n",perimeter);
-    // }
     return 0;
 }
