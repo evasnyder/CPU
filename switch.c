@@ -17,12 +17,13 @@ int main(int argc, char *argv[]) {
     int stopTime;
     char *fileName;
     char *processType;
+    int processTypeInt;
     int numCPU;
-    int avgCPUTime;
-    int avgBurstTime;
-    int avgInterArrivalTime;
-    int avgIOTime;
-    int numProcesses;
+    //char* avgCPUTime;
+    //int avgBurstTime;
+    //int avgInterArrivalTime;
+    //int avgIOTime;
+    //int numProcesses;
     FILE *fp;
 
 
@@ -77,6 +78,7 @@ int main(int argc, char *argv[]) {
      printf("Stop Time: %d\n",stopTime); 
 
      int i = 0;
+      const char *format = '%d';
     fp = fopen(fileName, "r");
      char  line[255];
 
@@ -85,11 +87,31 @@ int main(int argc, char *argv[]) {
     {
         //char val1[20] = strtok(line, ",");
         const char* processType = strtok(line, " ");
-        const char* val2 = strtok(NULL, ",");
+        const char* avgCPUTime = strtok(NULL, " ");
+        const char* avgBurstTime = strtok(NULL, " ");
+        const char* avgInterArrivalTime = strtok(NULL, " ");
+        const char* avgIOTime = strtok(NULL, " ");
 
-        //save
+        printf("%s%s\n","Chosen process: ",processType  );
+        printf("%s%s\n","Chosen process cpu time: ",avgCPUTime );
+        printf("%s%s\n","Chosen process burst time:",avgBurstTime );
+        // if(strcmp(processType, "2") == 0)
+        // {
+        //     printf("%s%d", "Number of Processes: ", processType);
+        // }
+        // else if (strcmp(processType, "interactive") == 0) {
+        //     processTypeInt = 2;
+        //     printf("%s%d\n%s%d\n%s%d\n%s%d\n%s%d\n","Process type: ", processType, "Average CPU Time: ", 
+        //         avgCPUTime, "Average Burst Time: ", avgBurstTime,
+        //          "Average InterArrival Time: ", avgInterArrivalTime, "Average I/O Time: ", avgIOTime);
 
-        printf("%s%s\n","Process type: ", processType);
+        // }
+        // else if (strcmp(processType, "batch") == 0) {
+        //     processTypeInt = 1;
+        // }
+        
+
+        //printf("%s%d\n","Process type: ", processTypeInt);
     }
 
     //  char *val1[10];
