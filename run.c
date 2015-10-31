@@ -151,7 +151,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
       struct Process* tempProcess = (struct Process*)malloc(sizeof(struct Process));
       tempProcess = event -> process;
       newEvent -> process = tempProcess;
-      free(event);
+      newEvent -> process -> cpu_service_time_remaining = event -> process -> cpu_service_time_remaining;
 
       // if the CPU is free - put a process on it ==> ROUND ROBIN HERE TO KNOW WHICH ONE
 
@@ -160,21 +160,22 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
 
       // generate a new event to remove it from the CPU
 
-      if ( (newEvent -> process -> cpu_service_time_remaining) < quantum ) {
-        printf("remove from CPU because of quantum\n");
+      if ( (event -> process -> cpu_service_time_remaining) < quantum ) {
+        printf("remove from CPU because of termination\n");
         // check to see if the process on the CPU should be terminated next
         // generate the time that the process should be terminated at
-        newEvent -> timeStamp = clock_time + (newEvent -> process  -> cpu_service_time_remaining);
+        newEvent -> timeStamp = clock_time + (event -> process  -> cpu_service_time_remaining);
         printf("$$$$$$$NEW TIME STAMP$$$$$$ %d\n", newEvent -> timeStamp);
         newEvent -> type = 4;
         newEvent -> process  -> CPU_running_on = i;
+        newEvent -> process -> cpu_service_time_remaining = 0;
 
         // put onto the event queue
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
         stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 
-      } else if ( (newEvent -> process  -> burst_time) < quantum){
+      } else if ( (event -> process  -> burst_time) < quantum){
         printf("remove from cpu because of the burst time \n");
         // check to see if the process on the CPU should go to IO
         printf("process burst time %d\n", newEvent -> process -> burst_time);
@@ -187,7 +188,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
         stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 
-      } else if ( (newEvent -> process -> cpu_service_time_remaining) > (newEvent -> process  -> burst_time) > quantum ) {
+      } else if ( (event -> process -> cpu_service_time_remaining) > (event -> process  -> burst_time) > quantum ) {
         printf("remove from cpu because of something.....\n");
         // check to see if the process
         // on the CPU quantum expires
@@ -341,6 +342,8 @@ struct Process* generateRandomValues(int processType, struct Process* process) {
       process -> interarrival_time = *exponential_distribution((avgBatchValues -> interArrTime));
       // calculate IO service time
       process -> IO_Service = *exponential_distribution((avgBatchValues -> IOTime));
+
+      process -> cpu_service_time_remaining = process -> cpu_service_time;
 
       return process;
 
