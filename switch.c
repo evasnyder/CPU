@@ -91,6 +91,15 @@ int main(int argc, char *argv[]) {
     saveAvgValue(1, 500, 250, 1000, 10);
     runCPU(stopTime, numCPU, contextSwitch, quantum);
 
+
+    //  while (fgets(line, sizeof line, fp) != NULL)
+    // {
+    //     printf("%s\n", line);
+    //     eptr = line;
+    //     printf("EPTR %s\n%d\n", eptr);
+
+
+    // }
 //     while (fgets(line, sizeof(line), fp) != NULL)
 //     {
 //         //char val1[20] = strtok(line, ",");
