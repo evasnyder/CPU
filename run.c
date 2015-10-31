@@ -211,11 +211,14 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
         case 1:
           printf("terminating a process  \n");
           // batch process
-            printf("avgBatchValues: %d\n", avgBatchValues);
+          printf("avgBatchValues: %d\n", avgBatchValues -> numCompleted);
           avgBatchValues -> numCompleted = avgBatchValues -> numCompleted + 1;
-          printf("avgBatchValues: %d\n", avgBatchValues);
+          printf("avgBatchValues: %d\n", avgBatchValues -> numCompleted);
+
+          printf("clocl value %d\n", clock_time - (event -> process -> start_time));
           // if the process that just finished was running for the longest time
           if (clock_time - (event -> process -> start_time) > avgBatchValues -> longestProcessTime) {
+            printf("inside if statement");
             avgBatchValues -> longestProcessTime = (clock_time - (event->process->start_time));
           }
           break;
