@@ -21,12 +21,12 @@ int main(int argc, char *argv[]) {
     int processTypeInt;
     int numCPU;
     int contextSwitch;
-    //char *endline = '\0';
-    //char* avgCPUTime;
-    //int avgBurstTime;
-    //int avgInterArrivalTime;
-    //int avgIOTime;
-    //int numProcesses;
+    enum { MAXLINES = 30 };
+    char* avgCPUTime;
+    int avgBurstTime;
+    int avgInterArrivalTime;
+    int avgIOTime;
+    int numProcesses;
     FILE *fp;
 
 
@@ -81,61 +81,46 @@ int main(int argc, char *argv[]) {
      printf("Quantum: %d\n",quantum);
      printf("Stop Time: %d\n",stopTime);
 
-     int i = 0;
+     int i, j;
     fp = fopen(fileName, "r");
      char  line[255];
      char *eptr;
      long result;
      char value[10];
+     int n1, n2, n3, n4;
 
-    saveAvgValue(1, 500, 250, 1000, 10);
-    runCPU(stopTime, numCPU, contextSwitch, quantum);
+    
 
+char lines[MAXLINES][BUFSIZ];
+     
+    while (i < MAXLINES && fgets(lines[i], sizeof(lines[0]), fp))
+    {
+        lines[i][strlen(lines[i])] = '\0';
+        i = i + 1;
+    }
+    fclose(fp);
+    printf("%d\n", i);
+    srand(time(0));
+    int k = (j+1) % i;
+    numProcesses = atoi(lines[0]);
+    processType = strtok(lines[2], " ");
+    avgCPUTime = atoi(strtok(NULL, " "));
+    avgBurstTime = atoi(strtok(NULL, " "));
+    avgInterArrivalTime = atoi(strtok(NULL, " "));
+    avgIOTime= atoi(strtok(NULL, " "));
 
-    //  while (fgets(line, sizeof line, fp) != NULL)
-    // {
-    //     printf("%s\n", line);
-    //     eptr = line;
-    //     printf("EPTR %s\n%d\n", eptr);
+    if (strcmp(processType, "batch") == 0)
+    {
+        printf("%s\n", "it's a batch, guys :')");
+        processTypeInt = 1;
+    }
+    //strcpy(avgCPUTime, strtok(NULL, " "));
+    printf("%d\n CPU TIME: %d\n%d\n%d\n%d\n", processTypeInt, avgCPUTime, 
+        avgBurstTime, avgInterArrivalTime, avgIOTime);
 
-
-    // }
-//     while (fgets(line, sizeof(line), fp) != NULL)
-//     {
-//         //char val1[20] = strtok(line, ",");
-//         const char* processType = strtok(line, " ");
-//         const char* avgCPUTime = strtok(NULL, " ");
-        
-//         strcpy(value, avgCPUTime);
-//         result = strtol(value, &eptr, 10);
-
-//         const char* avgBurstTime = strtok(NULL, " ");
-//         const char* avgInterArrivalTime = strtok(NULL, " ");
-//         const char* avgIOTime = strtok(NULL, " ");
-
-//         printf("%s%s\n","Chosen process: ",processType  );
-//         printf("%s%ld\n","Chosen process cpu time: ",result );
-//         printf("%s%ld\n","Chosen process burst time: ", strtol(avgBurstTime,line, 10)  );
-//         // if(strcmp(processType, "2") == 0)
-//         // {
-//         //     printf("%s%d", "Number of Processes: ", processType);
-//         // }
-//         // else if (strcmp(processType, "interactive") == 0) {
-//         //     processTypeInt = 2;
-//         //     printf("%s%d\n%s%d\n%s%d\n%s%d\n%s%d\n","Process type: ", processType, "Average CPU Time: ",
-//         //         avgCPUTime, "Average Burst Time: ", avgBurstTime,
-//         //          "Average InterArrival Time: ", avgInterArrivalTime, "Average I/O Time: ", avgIOTime);
-
-//         // }
-//         // else if (strcmp(processType, "batch") == 0) {
-//         //     processTypeInt = 1;
-//         // }
-// }
-
-
-
-    //     //printf("%s%d\n","Process type: ", processTypeInt);
-    // }
+    saveAvgValue(processTypeInt, avgCPUTime, avgBurstTime, avgInterArrivalTime, avgIOTime);
+    runCPU(stopTime, numCPU, contextSwitch, quantum); 
+    
 
 
     return 0;
