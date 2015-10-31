@@ -63,29 +63,15 @@ int getFirst()
 //return the data of the deleted head
 struct Event *deletePQ()
 {
-	struct Event *temp = NULL;
-	int event;
-
-	if (isEmptyPQ())
-	{
-		printf("EMPTY\n");
-	}
-
-	else
-	{
-		temp = head;
-		//event = temp -> type;
-		head = head->next;
-		// free(temp);
-        
-            size = size -1;
-        
-	}
-
-	printf("%s %d %s", "Deleted:", event, "\n");
-  printf("hello\n");
-  printf("temp Type %d\n", temp -> type);
-	return temp;
+   struct Event *temp = NULL;
+   if(isEmptyPQ()) printf("EMPTY\n");
+   else
+   { temp = head;
+     head = head->next;
+     --size;
+     printf("popped from queue: %d\n", temp->type);
+   }
+   return temp;
 }
 
 
