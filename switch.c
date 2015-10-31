@@ -15,7 +15,13 @@ int main(int argc, char *argv[]) {
     int quantum;
     int stopTime;
     char *fileName;
+    char *processType;
     int numCPU;
+    int avgCPUTime;
+    int avgBurstTime;
+    int avgInterArrivalTime;
+    int avgIOTime;
+    int numProcesses;
     FILE *fp;
 
 
@@ -64,34 +70,40 @@ int main(int argc, char *argv[]) {
     }
 
 
-     printf("Area: %s\n",fileName); 
-     printf("CPU: %d\n",numCPU); 
+     printf("Input file: %s\n",fileName); 
+     printf("number of CPUs: %d\n",numCPU); 
      printf("Quantum: %d\n",quantum); 
-     printf("StopTime: %d\n",stopTime); 
+     printf("Stop Time: %d\n",stopTime); 
 
+     int i = 0;
     fp = fopen(fileName, "r");
-     
-    char s1[200],*p;
-    while (fgets(s1, 200, fp))
+     char  line[255];
+
+    
+    while (fgets(line, sizeof(line), fp) != NULL)
     {
+        //char val1[20] = strtok(line, ",");
+        const char* val1 = strtok(line, " ");
+        const char* val2 = strtok(NULL, ",");
 
-while (fgets(s1, 200, fp))
-{
-
-    p=strtok(s1, ";\n");
-
-    do
-    {
-        printf ("%s\n",p);
+        printf("%s%s\n", val1);
     }
-    while(p=strtok(NULL,";\n"));
-}
+
+    //  char *val1[10];
+    // (fgets(line, sizeof(line), fp));
+    // val1[i] = strtok(line," ");
+
+    // while(val1[i]!=NULL)
+    // {
+    //    val1[++i] = strtok(NULL,"/");
+    //    printf("%s\n", val1[++i]);
+    // }
 
 
 
     //call createNewProcess
     //
-}
+
 
 
 

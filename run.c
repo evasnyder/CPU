@@ -69,7 +69,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
 void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats, int process_type) {
   // create a new Process
-  struct Process* newProcess = (struct Process*)malloc(sizeof(struct Process));
+  struct Process *newProcess = (struct Process*)malloc(sizeof(struct Process));
   // create a new Event
   struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
 
