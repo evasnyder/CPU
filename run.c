@@ -8,9 +8,7 @@ int clock_time = 0;
 struct batch* avgBatchValues;
 struct interactive* avgInteractiveValues;
 
-int main() {
 
-}
 //one cannot return array in C, only a pointer to the array
 void initializeCPUS(struct CPU *cpu) {
   //struct CPU cpu;
