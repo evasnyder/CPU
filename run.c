@@ -78,6 +78,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
           schedulingDecision(event, contextSwitch, cpu_array, numCPUS, quantum, stats);
         } else if (event -> type == 4 || event -> type == 5 || event -> type == 6) {
           printf("event type is to remove something from the CPU\n");
+          printf("event process type before removing: %d\n", event -> process_type);
           removeProcess(event -> type, event, cpu_array, contextSwitch, stats);
         } else {
           return;
@@ -135,7 +136,7 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
 void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs, int numCPUs, int quantum, struct Statistics *stats) {
   // add the new event to the ready queue
   enqueue(event);
-
+  printf("event process type in a scheduling decision %d\n", event -> process_type);
   // check to see if any CPUs are idle
   int i;
   for (i = 0; i < numCPUs; i++) {
