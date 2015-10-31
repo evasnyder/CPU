@@ -14,34 +14,37 @@ int size = 0;
 //if the Queue is not empty and the priority of the new element is lower than the head's, then traverse through the Queue until the correct position for its priority is found
 void add(struct Event* newEvent)
 {
-    int newElement;
-    int eventPriority;
+    //int newElement;
+    //int eventPriority;
 	struct Event* temp1;
 	struct Event* temp2;
 
 	temp1 = (struct Event*)malloc(sizeof(struct Event));
 
-	temp1->type = newElement;
-	temp1->timeStamp = eventPriority;
+	//newEvent->type = newElement;
+	//newEvent->timeStamp = eventPriority;
 
 	//if the Queue is empty of if the element that is being inserted has a higher priority
-	if (isEmptyPQ() || eventPriority < head->timeStamp)
+	if (isEmptyPQ() || newEvent->timeStamp < head->timeStamp)
 	{
-		temp1->next = head;
-		head = temp1;
+
+		temp1 = head;
+		head = newEvent;
+		head -> next = temp1;
         size = size +1;
 	}
 
 	else {
-		temp2 = head;
+		temp1 = head;
 
-		while (temp2->next != NULL && temp2->next->timeStamp <= eventPriority)
+		while (temp1->next != NULL && temp1->next->timeStamp <= newEvent->timeStamp)
 		{
-			temp2 = temp2->next;
+			temp1 = temp1->next;
 		}
 
-		temp1->next = temp2->next;
-		temp2->next = temp1;
+		temp2 = temp1->next;
+		temp1->next = newEvent
+		newEvent-> = temp2
         size = size +1;
 	}
 }
