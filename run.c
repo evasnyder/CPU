@@ -199,12 +199,15 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
 void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextSwitch, struct Statistics *stats) {
   // clock is equal to the time stamp (i.e priority) from the process being removed
   // from the event queue
+  printf("remiving a process %d\n", type);
   struct Event* newEvent;
   switch(type) {
+    printf("inside switch\n");
     // terminate
     case 4:
       switch(event->process_type) {
         case 1:
+          printf("terminating a process \n");
           // batch process
           avgBatchValues -> numCompleted = avgBatchValues -> numCompleted + 1;
           // if the process that just finished was running for the longest time
