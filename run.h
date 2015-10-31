@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-typedef struct Event {
+struct Event {
   int timeStamp;
   int type;
   struct Event *next;
@@ -13,7 +13,7 @@ typedef struct Event {
     // return from IO == 7
   struct Process *process;
   int process_type;
-} Event;
+};
 
 struct Process {
   // how long I'm stuck in the IO
