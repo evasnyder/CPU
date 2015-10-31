@@ -145,6 +145,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
       struct Process* tempProcess = (struct Process*)malloc(sizeof(struct Process));
       tempProcess = event -> process;
       newEvent -> process = tempProcess;
+      newEvent -> process_type = event -> process_type;
       free(event);
 
       // if the CPU is free - put a process on it ==> ROUND ROBIN HERE TO KNOW WHICH ONE
@@ -160,6 +161,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         newEvent -> timeStamp = clock_time + (newEvent -> process  -> cpu_service_time_remaining);
         newEvent -> type = 4;
         newEvent -> process  -> CPU_running_on = i;
+        newEvent -> process_type = event -> process_type;
 
         // put onto the event queue
         add(newEvent);
@@ -172,6 +174,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         newEvent -> timeStamp = clock_time + (newEvent -> process -> burst_time);
         newEvent -> type = 5; // return from IO aka go back to ready queue
         newEvent -> process -> CPU_running_on = i;
+        newEvent -> process_type = event -> process_type;
         // put onto the event queue
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
@@ -182,6 +185,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         // on the CPU quantum expires
         newEvent -> timeStamp = clock_time + quantum + contextSwitch;
         newEvent -> type = 6;
+        newEvent -> process_type = event -> process_type;
         tempProcess -> CPU_running_on = i;
         // put onto the event queue
         add(newEvent);
@@ -207,7 +211,9 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
         case 1:
           printf("terminating a process  \n");
           // batch process
+            printf("avgBatchValues: %d\n", avgBatchValues);
           avgBatchValues -> numCompleted = avgBatchValues -> numCompleted + 1;
+          printf("avgBatchValues: %d\n", avgBatchValues);
           // if the process that just finished was running for the longest time
           if (clock_time - (event -> process -> start_time) > avgBatchValues -> longestProcessTime) {
             avgBatchValues -> longestProcessTime = (clock_time - (event->process->start_time));
