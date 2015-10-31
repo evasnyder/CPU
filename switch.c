@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
      char  line[255];
 
     saveAvgValue(2, 500, 250, 1000, 10);
-    runCPU(100, 2, 3, 10); 
+    runCPU(stopTime, numCPU, contextSwitch, quantum);
     
     // while (fgets(line, sizeof(line), fp) != NULL)
     // {
