@@ -5,11 +5,8 @@
 void add(struct Event* newEvent);
 int sizePQ();
 int getFirst();
-<<<<<<< Updated upstream
-Event* deletePQ();
-=======
-event deletePQ();
->>>>>>> Stashed changes
+struct Event* deletePQ();
+//event deletePQ();
 int isEmptyPQ();
 void printPQ();
 

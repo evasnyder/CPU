@@ -61,9 +61,9 @@ int getFirst()
 //declare an int variable and save head's data to it
 //set the second Node in the Queue (the one after the head) as the head and free temp's memory to get rid of the previous head in memory
 //return the data of the deleted head
-Event *deletePQ()
+struct Event *deletePQ()
 {
-	struct Event *temp = (struct Event*)malloc(sizeof(struct Event));;
+	struct Event *temp = NULL;
 	int event;
 
 	if (isEmptyPQ())
@@ -74,13 +74,12 @@ Event *deletePQ()
 	else
 	{
 		temp = head;
-		event = temp -> type;
+		//event = temp -> type;
 		head = head->next;
 		// free(temp);
-        if (size != 0)
-        {
+        
             size = size -1;
-        }
+        
 	}
 
 	printf("%s %d %s", "Deleted:", event, "\n");
@@ -88,6 +87,7 @@ Event *deletePQ()
   printf("temp Type %d\n", temp -> type);
 	return temp;
 }
+
 
 int sizePQ()
 {

@@ -54,9 +54,9 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
     // if there are events in the queue...
       // DEQUEUE an event from the event queue
       if(!isEmptyPQ()) {
-        // struct Event *event = (struct Event*)malloc(sizeof(struct Event));
+        struct Event *event = malloc(sizeof(struct Event));
         printf("queue is not empty\n");
-        struct Event *event = deletePQ();
+       struct Event *event = deletePQ();
         printf("Event type %d\n", event -> type);
         // UPDATE clock to the priority of the dequeued event
         clock_time = event -> timeStamp;
