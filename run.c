@@ -74,7 +74,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
           return;
         }
       } else {
-          if(beginning = 1) {
+          if(beginning == 1) {
             // struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
             // createNewProcess(newEvent, clock_time, stats, newEvent -> process_type);
             beginning = 0;
@@ -165,8 +165,8 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 
       } else if ( (newEvent -> process -> cpu_service_time_remaining) > (newEvent -> process  -> burst_time) > quantum ) {
-        // check to see if the process 
-        on the CPU quantum expires
+        // check to see if the process
+        // on the CPU quantum expires
         newEvent -> timeStamp = clock_time + quantum + contextSwitch;
         newEvent -> type = 6;
         tempProcess -> CPU_running_on = i;
@@ -264,7 +264,8 @@ void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArriva
       newEvent -> type = 1;
       newEvent -> process_type = 1;
       printf("adding new event from save avg values\n");
-      add(newEvent);
+      add(&newEvent);
+      printPQ();
       // batch
       avgBatchValues -> cpuTime = avgCPU;
       avgBatchValues -> burstTime = avgBurst;

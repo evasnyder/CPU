@@ -19,6 +19,8 @@ void add(struct Event* newEvent)
 	struct Event* temp1;
 	struct Event* temp2;
 
+  printf("newEvent type %d\n", newEvent -> type);
+
 	temp1 = (struct Event*)malloc(sizeof(struct Event));
 
 	//newEvent->type = newElement;
@@ -43,8 +45,8 @@ void add(struct Event* newEvent)
 		}
 
 		temp2 = temp1->next;
-		temp1->next = newEvent
-		newEvent-> = temp2
+		temp1->next = newEvent;
+		newEvent -> next = temp2;
         size = size +1;
 	}
 }
