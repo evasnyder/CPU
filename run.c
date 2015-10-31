@@ -57,6 +57,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
         printf("queue is not empty\n");
       //  struct Event *event = deletePQ();
         struct Event *event = malloc(sizeof(struct Event));
+        event -> type = 0;
         printf("eh: %d\n", event->type);
         event = deletePQ();
         if(event -> type == NULL) {
@@ -78,11 +79,16 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
           schedulingDecision(event, contextSwitch, cpu_array, numCPUS, quantum, stats);
         } else if (event -> type == 4 || event -> type == 5 || event -> type == 6) {
           printf("event type is to remove something from the CPU\n");
-          printf("event process type before removing: %d\n", event -> process_type);
           removeProcess(event -> type, event, cpu_array, contextSwitch, stats);
         } else {
           return;
         }
+      } else {
+          if(beginning == 1) {
+            struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
+            createNewProcess(newEvent, clock_time, stats, newEvent -> process_type);
+            beginning = 0;
+          }
       }
   }
 
@@ -123,8 +129,6 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
   // set the event type - scheduling decision
   newEvent -> type = 2;
   newEvent -> process = newProcess;
-  newEvent -> process_type = process_type;
-  printf("process type LOOK HERE%d\n", newEvent -> process_type);
   printf("we made it this far\n");
   // add event to the event queue
   add(newEvent);
@@ -136,7 +140,7 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
 void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs, int numCPUs, int quantum, struct Statistics *stats) {
   // add the new event to the ready queue
   enqueue(event);
-  printf("event process type in a scheduling decision %d\n", event -> process_type);
+
   // check to see if any CPUs are idle
   int i;
   for (i = 0; i < numCPUs; i++) {
@@ -145,7 +149,6 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
       struct Process* tempProcess = (struct Process*)malloc(sizeof(struct Process));
       tempProcess = event -> process;
       newEvent -> process = tempProcess;
-      newEvent -> process_type = event -> process_type;
       free(event);
 
       // if the CPU is free - put a process on it ==> ROUND ROBIN HERE TO KNOW WHICH ONE
@@ -161,7 +164,6 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         newEvent -> timeStamp = clock_time + (newEvent -> process  -> cpu_service_time_remaining);
         newEvent -> type = 4;
         newEvent -> process  -> CPU_running_on = i;
-        newEvent -> process_type = event -> process_type;
 
         // put onto the event queue
         add(newEvent);
@@ -174,7 +176,6 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         newEvent -> timeStamp = clock_time + (newEvent -> process -> burst_time);
         newEvent -> type = 5; // return from IO aka go back to ready queue
         newEvent -> process -> CPU_running_on = i;
-        newEvent -> process_type = event -> process_type;
         // put onto the event queue
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
@@ -185,7 +186,6 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         // on the CPU quantum expires
         newEvent -> timeStamp = clock_time + quantum + contextSwitch;
         newEvent -> type = 6;
-        newEvent -> process_type = event -> process_type;
         tempProcess -> CPU_running_on = i;
         // put onto the event queue
         add(newEvent);
@@ -199,26 +199,19 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
 void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextSwitch, struct Statistics *stats) {
   // clock is equal to the time stamp (i.e priority) from the process being removed
   // from the event queue
-  printf("removing a process %d\n", event->process_type);
+  printf("remiving a process %d\n", type);
   struct Event* newEvent;
   switch(type) {
     printf("inside switch\n");
     // terminate
     case 4:
-      printf("4 bitches\n");
-      printf("event process type %d\n", event -> process_type);
       switch(event->process_type) {
         case 1:
-          printf("terminating a process  \n");
+          printf("terminating a process \n");
           // batch process
-          printf("avgBatchValues: %d\n", avgBatchValues -> numCompleted);
           avgBatchValues -> numCompleted = avgBatchValues -> numCompleted + 1;
-          printf("avgBatchValues: %d\n", avgBatchValues -> numCompleted);
-
-          printf("clocl value %d\n", clock_time - (event -> process -> start_time));
           // if the process that just finished was running for the longest time
           if (clock_time - (event -> process -> start_time) > avgBatchValues -> longestProcessTime) {
-            printf("inside if statement");
             avgBatchValues -> longestProcessTime = (clock_time - (event->process->start_time));
           }
           break;

@@ -84,40 +84,45 @@ int main(int argc, char *argv[]) {
      int i = 0;
     fp = fopen(fileName, "r");
      char  line[255];
+     char *eptr;
+     long result;
+     char value[10];
 
     saveAvgValue(1, 500, 250, 1000, 10);
     runCPU(stopTime, numCPU, contextSwitch, quantum);
 
-    // while (fgets(line, sizeof(line), fp) != NULL)
-    // {
-    //     //char val1[20] = strtok(line, ",");
-    //     const char* processType = strtok(line, " ");
-    //     const char* avgCPUTime = strtok(NULL, " ");
-    //     char *result = malloc(strlen(avgCPUTime)+strlen(endline)+1);//+1 for the zero-terminator
-    // //in real code you would check for errors in malloc here
-    // strcpy(result, avgCPUTime);
-    // strcat(result, endline);
-    //     const char* avgBurstTime = strtok(NULL, " ");
-    //     const char* avgInterArrivalTime = strtok(NULL, " ");
-    //     const char* avgIOTime = strtok(NULL, " ");
+//     while (fgets(line, sizeof(line), fp) != NULL)
+//     {
+//         //char val1[20] = strtok(line, ",");
+//         const char* processType = strtok(line, " ");
+//         const char* avgCPUTime = strtok(NULL, " ");
+        
+//         strcpy(value, avgCPUTime);
+//         result = strtol(value, &eptr, 10);
 
-    //     printf("%s%s\n","Chosen process: ",processType  );
-    //     printf("%s%d\n","Chosen process cpu time: ",atoi(&result)  );
-    //     printf("%s%ld\n","Chosen process burst time: ", strtol(avgBurstTime,line, 10)  );
-    //     // if(strcmp(processType, "2") == 0)
-    //     // {
-    //     //     printf("%s%d", "Number of Processes: ", processType);
-    //     // }
-    //     // else if (strcmp(processType, "interactive") == 0) {
-    //     //     processTypeInt = 2;
-    //     //     printf("%s%d\n%s%d\n%s%d\n%s%d\n%s%d\n","Process type: ", processType, "Average CPU Time: ",
-    //     //         avgCPUTime, "Average Burst Time: ", avgBurstTime,
-    //     //          "Average InterArrival Time: ", avgInterArrivalTime, "Average I/O Time: ", avgIOTime);
+//         const char* avgBurstTime = strtok(NULL, " ");
+//         const char* avgInterArrivalTime = strtok(NULL, " ");
+//         const char* avgIOTime = strtok(NULL, " ");
 
-    //     // }
-    //     // else if (strcmp(processType, "batch") == 0) {
-    //     //     processTypeInt = 1;
-    //     // }
+//         printf("%s%s\n","Chosen process: ",processType  );
+//         printf("%s%ld\n","Chosen process cpu time: ",result );
+//         printf("%s%ld\n","Chosen process burst time: ", strtol(avgBurstTime,line, 10)  );
+//         // if(strcmp(processType, "2") == 0)
+//         // {
+//         //     printf("%s%d", "Number of Processes: ", processType);
+//         // }
+//         // else if (strcmp(processType, "interactive") == 0) {
+//         //     processTypeInt = 2;
+//         //     printf("%s%d\n%s%d\n%s%d\n%s%d\n%s%d\n","Process type: ", processType, "Average CPU Time: ",
+//         //         avgCPUTime, "Average Burst Time: ", avgBurstTime,
+//         //          "Average InterArrival Time: ", avgInterArrivalTime, "Average I/O Time: ", avgIOTime);
+
+//         // }
+//         // else if (strcmp(processType, "batch") == 0) {
+//         //     processTypeInt = 1;
+//         // }
+// }
+
 
 
     //     //printf("%s%d\n","Process type: ", processTypeInt);
