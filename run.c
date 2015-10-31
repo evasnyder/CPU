@@ -66,38 +66,29 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
           printf("event is not null, trying to access type\n");
           printf("IT DID SOMETHINGGGGG!!! %d\n", event->type);
         }
-      }
-        // if(event -> type != NULL) {
-        //   printf("not null...\n");
-        //     printf("Event type %d\n", event -> type);
-        //     free(event);
-        // } else {
-        //   printf("EVENT IS NULL\n");
-        // }
-        // printf("Event type %d\n", event -> type);
-        // // UPDATE clock to the priority of the dequeued event
-        // clock_time = event -> timeStamp;
+        // UPDATE clock to the priority of the dequeued event
+        clock_time = event -> timeStamp;
 
-      //   if(event -> type == 1) {
-      //     printf("event type is to create a new process\n");
-      //     // create a new process
-      //     createNewProcess(event, clock_time, stats, event -> process_type);
-      //   } else if (event -> type == 2) {
-      //     printf("event type is to make a decision\n");
-      //     schedulingDecision(event, contextSwitch, cpu_array, numCPUS, quantum, stats);
-      //   } else if (event -> type == 4 || event -> type == 5 || event -> type == 6) {
-      //     printf("event type is to remove something from the CPU\n");
-      //     removeProcess(event -> type, event, cpu_array, contextSwitch, stats);
-      //   } else {
-      //     return;
-      //   }
-      // } else {
-      //     if(beginning == 1) {
-      //       struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
-      //       createNewProcess(newEvent, clock_time, stats, newEvent -> process_type);
-      //       beginning = 0;
-      //     }
-      //}
+        if(event -> type == 1) {
+          printf("event type is to create a new process\n");
+          // create a new process
+          createNewProcess(event, clock_time, stats, event -> process_type);
+        } else if (event -> type == 2) {
+          printf("event type is to make a decision\n");
+          schedulingDecision(event, contextSwitch, cpu_array, numCPUS, quantum, stats);
+        } else if (event -> type == 4 || event -> type == 5 || event -> type == 6) {
+          printf("event type is to remove something from the CPU\n");
+          removeProcess(event -> type, event, cpu_array, contextSwitch, stats);
+        } else {
+          return;
+        }
+      } else {
+          if(beginning == 1) {
+            struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
+            createNewProcess(newEvent, clock_time, stats, newEvent -> process_type);
+            beginning = 0;
+          }
+      }
   }
 
   stats -> len_simulation_time = runtime;
