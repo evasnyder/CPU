@@ -54,8 +54,9 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
     // if there are events in the queue...
       // DEQUEUE an event from the event queue
       if(!isEmptyPQ()) {
+        struct Event *event = (struct Event*)malloc(sizeof(struct Event));
         printf("queue is not empty\n");
-        struct Event *event = delete();
+        event = deletePQ();
         printf("Event type %d\n", event -> type);
         // UPDATE clock to the priority of the dequeued event
         clock_time = event -> timeStamp;
@@ -264,7 +265,8 @@ void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArriva
       newEvent -> type = 1;
       newEvent -> process_type = 1;
       printf("adding new event from save avg values\n");
-      add(&newEvent);
+      printf("newEvent type before adding it: %d\n", newEvent -> type);
+      add(newEvent);
       printPQ();
       // batch
       avgBatchValues -> cpuTime = avgCPU;

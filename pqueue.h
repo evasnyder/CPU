@@ -5,7 +5,7 @@
 void add(struct Event* newEvent);
 int sizePQ();
 int getFirst();
-struct Event* delete();
+struct Event deletePQ();
 int isEmptyPQ();
 void printPQ();
 
