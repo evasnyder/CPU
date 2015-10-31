@@ -82,7 +82,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
         } else {
           return;
         }
-      } 
+      }
   }
 
   stats -> len_simulation_time = runtime;
@@ -122,6 +122,8 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
   // set the event type - scheduling decision
   newEvent -> type = 2;
   newEvent -> process = newProcess;
+  newEvent -> process_type = process_type;
+  printf("process type LOOK HERE%d\n", newEvent -> process_type);
   printf("we made it this far\n");
   // add event to the event queue
   add(newEvent);
@@ -192,12 +194,14 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
 void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextSwitch, struct Statistics *stats) {
   // clock is equal to the time stamp (i.e priority) from the process being removed
   // from the event queue
-  printf("remiving a process %d\n", type);
+  printf("removing a process %d\n", event->process_type);
   struct Event* newEvent;
   switch(type) {
     printf("inside switch\n");
     // terminate
     case 4:
+      printf("4 bitches\n");
+      printf("event process type %d\n", event -> process_type);
       switch(event->process_type) {
         case 1:
           printf("terminating a process  \n");
