@@ -162,6 +162,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         // check to see if the process on the CPU should be terminated next
         // generate the time that the process should be terminated at
         newEvent -> timeStamp = clock_time + (newEvent -> process  -> cpu_service_time_remaining);
+        printf("$$$$$$$NEW TIME STAMP$$$$$$ %d\n", newEvent -> timeStamp);
         newEvent -> type = 4;
         newEvent -> process  -> CPU_running_on = i;
         newEvent -> process_type = event -> process_type;
@@ -339,13 +340,14 @@ struct Process* generateRandomValues(int processType, struct Process* process) {
     // batch
     case 1:
       // calculte CPU service time
-      process -> cpu_service_time = exponential_distribution((avgBatchValues -> cpuTime));
+      process -> cpu_service_time = *exponential_distribution((avgBatchValues -> cpuTime));
+      printf("process cpu service time: %d\n", process -> cpu_service_time);
       // calculate burst time
-      process -> burst_time = exponential_distribution((avgBatchValues -> burstTime));
+      process -> burst_time = *exponential_distribution((avgBatchValues -> burstTime));
       // calculate interarrival time
-      process -> interarrival_time = exponential_distribution((avgBatchValues -> interArrTime));
+      process -> interarrival_time = *exponential_distribution((avgBatchValues -> interArrTime));
       // calculate IO service time
-      process -> IO_Service = exponential_distribution((avgBatchValues -> IOTime));
+      process -> IO_Service = *exponential_distribution((avgBatchValues -> IOTime));
 
       return process;
 
