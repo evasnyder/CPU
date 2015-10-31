@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
+#include "run.h"
 
 /** Program to calculate the area and perimeter of 
  * a rectangle using command line arguments
@@ -83,10 +84,12 @@ int main(int argc, char *argv[]) {
     while (fgets(line, sizeof(line), fp) != NULL)
     {
         //char val1[20] = strtok(line, ",");
-        const char* val1 = strtok(line, " ");
+        const char* processType = strtok(line, " ");
         const char* val2 = strtok(NULL, ",");
 
-        printf("%s%s\n", val1);
+        //save
+
+        printf("%s%s\n","Process type: ", processType);
     }
 
     //  char *val1[10];
