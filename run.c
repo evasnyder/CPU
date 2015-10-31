@@ -57,7 +57,6 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
         printf("queue is not empty\n");
       //  struct Event *event = deletePQ();
         struct Event *event = malloc(sizeof(struct Event));
-        event -> type = 0;
         printf("eh: %d\n", event->type);
         event = deletePQ();
         if(event -> type == NULL) {
@@ -83,13 +82,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
         } else {
           return;
         }
-      } else {
-          if(beginning == 1) {
-            struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
-            createNewProcess(newEvent, clock_time, stats, newEvent -> process_type);
-            beginning = 0;
-          }
-      }
+      } 
   }
 
   stats -> len_simulation_time = runtime;
@@ -207,7 +200,7 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
     case 4:
       switch(event->process_type) {
         case 1:
-          printf("terminating a process \n");
+          printf("terminating a process  \n");
           // batch process
           avgBatchValues -> numCompleted = avgBatchValues -> numCompleted + 1;
           // if the process that just finished was running for the longest time
