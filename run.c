@@ -28,6 +28,18 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   int beginning = 1;
 
   struct Statistics* stats = (struct Statistics*)malloc(sizeof(struct Statistics));
+  stats -> len_simulation_time = 0;
+  stats -> num_processes_complete = 0;
+  stats -> final_len_event_queue = 0;
+  stats -> avg_len_event_queue = 0;
+  stats -> final_len_ready_queue = 0;
+  stats -> avg_len_ready_queue = 0;
+
+  stats -> total_event_queue_lengths = 0;
+  stats -> num_event_queue_changed = 0;
+
+  stats -> total_ready_queue_lengths = 0;
+  stats -> num_ready_queue_changed = 0;
 
   printf("made stats\n");
 
@@ -49,6 +61,13 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
   // while there is still runtime left in the CPU
   while (clock_time <= runtime) {
+    printf("IN WHILE LOOP*******************************\n");
+    printf("CLOCK TIME: %d\n", clock_time);
+
+    if(clock_time > runtime) {
+      printf("******************* DONE BITCHESSSSS ****************** \n");
+      break;
+    }
     // printf("In the while loop \n");
 
     // if there are events in the queue...
@@ -81,23 +100,22 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
         } else if (event -> type == 4 || event -> type == 5 || event -> type == 6) {
           printf("event type is to remove something from the CPU\n");
           removeProcess(event -> type, event, cpu_array, contextSwitch, stats);
-        } else {
-          return;
         }
-      } else {
-          if(beginning == 1) {
-            struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
-            createNewProcess(newEvent, clock_time, stats, newEvent -> process_type);
-            beginning = 0;
-          }
       }
   }
 
-  stats -> len_simulation_time = runtime;
+  printf("******************** Operation Succesful ************************\n");
+
+  stats -> len_simulation_time = clock_time;
+  printf("length of simulation time: %d\n", stats -> len_simulation_time);
   stats -> final_len_event_queue = sizePQ();
+  printf("final event queue length %d\n", stats -> final_len_event_queue);
   stats -> final_len_ready_queue = sizeQ();
-  stats -> avg_len_event_queue = (stats -> total_event_queue_lengths) / (stats -> num_event_queue_changed);
-  stats -> avg_len_ready_queue = (stats -> total_ready_queue_lengths) / (stats -> num_ready_queue_changed);
+  printf("final ready queue length %d\n", stats -> final_len_ready_queue);
+  stats -> avg_len_event_queue = (stats -> total_event_queue_lengths) / (float)(stats -> num_event_queue_changed);
+  printf("average length event queue %d\n", stats -> avg_len_event_queue);
+  stats -> avg_len_ready_queue = (stats -> total_ready_queue_lengths) / (float)(stats -> num_ready_queue_changed);
+  printf("average length ready queue %d\n", stats -> avg_len_ready_queue);
 
 }
 
