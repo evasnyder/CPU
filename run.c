@@ -49,6 +49,11 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
   // while there is still runtime left in the CPU
   while (clock_time <= runtime) {
+
+    if(clock_time > runtime) {
+      printf("******************* DONE BITCHESSSSS ****************** \n");
+      break;
+    }
     // printf("In the while loop \n");
 
     // if there are events in the queue...
@@ -84,13 +89,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
         } else {
           return;
         }
-      } else {
-          if(beginning == 1) {
-            struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
-            createNewProcess(newEvent, clock_time, stats, newEvent -> process_type);
-            beginning = 0;
-          }
-      }
+      } 
   }
 
   stats -> len_simulation_time = runtime;
