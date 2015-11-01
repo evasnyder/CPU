@@ -14,7 +14,6 @@ int QUEUE_SIZE = 0;
 **/
 void enqueue (struct Event *newEvent) {
   int new_value;
-	printf("Enqueueing element: %d\n", newEvent -> type);
 	// create a new node with the size of a Node
 	newEvent = (struct Event*)malloc(sizeof(struct Event));
 
@@ -49,7 +48,6 @@ void enqueue (struct Event *newEvent) {
 * Method to remove the head node from the queue
 **/
 void dequeue() {
-	printf("Dequeueing element");
 	// save the value of the head before the dequeue begins
 	// going to print the value of the currentHead after you remove it from the list
 	struct Event* headToBeRemoved = QUEUE_HEAD;
@@ -58,7 +56,6 @@ void dequeue() {
 	// i.e head is equal to null
 	if(QUEUE_HEAD == NULL) {
 		// there's nothing to do because it's already empty so woohoo
-		printf("The queue is already empty\n");
 	} else if (QUEUE_HEAD == QUEUE_TAIL) {
 		// if there is one node in the queue i.e head == tail
 		// take away the head and tail
@@ -95,7 +92,6 @@ int sizeQ() {
 **/
 void printQ() {
 	struct Event* newHead = QUEUE_HEAD;
-	printf("Your Queue: ");
 	while(newHead != NULL) {
 		printf(" %d", newHead -> type);
 		newHead = newHead -> next;

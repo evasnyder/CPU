@@ -5,13 +5,9 @@
 #include <string.h>
 #include "run.h"
 
-/** Program to calculate the area and perimeter of
- * a rectangle using command line arguments
- */
-void print_usage() {
-    printf("Usage: rectangle [ap] -l num -b num\n");
-}
 
+
+//main method
 int main(int argc, char *argv[]) {
     int opt= 0;
     int quantum;
@@ -46,6 +42,7 @@ int main(int argc, char *argv[]) {
         {0,           0,                 0,  0   }
     };
 
+    //switch statements for the different cases
     int long_index =0;
     while ((opt = getopt_long(argc, argv,"apf:b:c:q:t:w:n:v:b:h:",
                    long_options, &long_index )) != -1) {
@@ -72,12 +69,12 @@ int main(int argc, char *argv[]) {
 
                  break;
 
-             default: print_usage();
                  exit(EXIT_FAILURE);
         }
     }
 
 
+    //read input file if an argument is given
      if (fileName != NULL){
 
 
@@ -90,21 +87,16 @@ int main(int argc, char *argv[]) {
      int n1, n2, n3, n4;
 
 
-
-<<<<<<< HEAD
+     //array to store each line 
     char lines[MAXLINES][size];
      
-=======
-    char lines[MAXLINES][BUFSIZ];
 
->>>>>>> origin/master
     //save the contents of the file in an array
     while (i < MAXLINES && fgets(lines[i], sizeof(lines[0]), fp))
     {
         lines[i][strlen(lines[i])] = '\0';
         i = i + 1;
     }
-    printf("IIIIIII%d\n", i);
 
     //close file after reading it
     fclose(fp);
@@ -113,55 +105,40 @@ int main(int argc, char *argv[]) {
     int k = (j+1) % i;
     int hello = i; 
 
-numProcesses = atoi(lines[0]);
+    //total number of processes specified
+    numProcesses = atoi(lines[0]);
+
+    //go through all different types of processes and run the cpu scheduler
     for (int m = 1; m < i; ++m)
     {
 
-        printf("IIIIIII%d\n", i);
-    //save the 
-    printf("MMMMMM%d\n", m);
-    int hello = m;
-
+    //tokenize
     processType = strtok(lines[m], " ");
     avgCPUTime = atoi(strtok(NULL, " "));
     avgBurstTime = atoi(strtok(NULL, " "));
     avgInterArrivalTime = atoi(strtok(NULL, " "));
     avgIOTime= atoi(strtok(NULL, " "));
 
+    //set int representation of process type 
     if (strcmp(processType, "batch") == 0)
     {
-        printf("%s\n", "it's a batch, guys :')");
         processTypeInt = 1;
     }
 
-<<<<<<< HEAD
     else if (strcmp(processType, "interactive") == 0)
     {
-        printf("%s\n", "it's a batch, guys :')");
         processTypeInt = 2;
     }
 
 
-    printf("%s\n", processType);
-    
-    printf("%d\n CPU TIME: %d\n%d\n%d\n%d\n", processTypeInt, avgCPUTime, 
-        avgBurstTime, avgInterArrivalTime, avgIOTime);
-
+    //save the average values and then run the cpu scheduler
     saveAvgValue(processTypeInt, avgCPUTime, avgBurstTime, avgInterArrivalTime, avgIOTime);
     runCPU(stopTime, numCPU, contextSwitch, quantum); 
 }
-    
-=======
-    // printf("%d\n CPU TIME: %d\n%d\n%d\n%d\n", processTypeInt, avgCPUTime,
-    //     avgBurstTime, avgInterArrivalTime, avgIOTime);
 
-    saveAvgValue(processTypeInt, avgCPUTime, avgBurstTime, avgInterArrivalTime, avgIOTime);
-    runCPU(stopTime, numCPU, contextSwitch, quantum); 
 
->>>>>>> origin/master
 }
 
-//timestamp - interarrival
 
     return 0;
 }

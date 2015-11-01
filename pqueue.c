@@ -19,8 +19,6 @@ void add(struct Event* newEvent)
 	struct Event* temp1;
 	struct Event* temp2;
 
-  printf("newEvent type %d\n", newEvent -> type);
-
 	temp1 = (struct Event*)malloc(sizeof(struct Event));
 
 	//newEvent->type = newElement;
@@ -68,7 +66,6 @@ struct Event* deletePQ() {
    { temp = head;
      head = head->next;
      --size;
-     printf("popped from queue: %d\n", temp->type);
    }
    return temp;
 }
@@ -102,8 +99,6 @@ void printPQ() {
 	else {
 		while (temp != NULL)
 		{
-			printf("%s %d %s %d", "Data:", temp->type, "Priority:",temp->timeStamp);
-			printf("\n");
 			temp = temp->next;
 		}
 	}
