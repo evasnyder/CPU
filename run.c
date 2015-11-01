@@ -19,6 +19,10 @@ void initializeCPUS(struct CPU *cpu) {
   //return cpu;
 }
 
+/*
+* Method to run the CPU scheduler!
+* Calls all of the necessary methods to make our CPU scheduler work.
+*/
 void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
   printf("ENTERING RUN \n");
@@ -26,8 +30,6 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   printf("numCPUS %d\n", numCPUS);
   printf("contextSwitch %d\n", contextSwitch);
   printf("quantum %d\n", quantum);
-
-  int beginning = 1;
 
   struct Statistics* stats = (struct Statistics*)malloc(sizeof(struct Statistics));
   stats -> len_simulation_time = 0;
@@ -177,6 +179,10 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
   stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 }
 
+/*
+* Method which decides if it's possible to put a process on the CPU and if so, does
+* and then generates an event to later remove it and free the CPU again
+*/
 void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs, int numCPUs, int quantum, struct Statistics *stats) {
   // add the new event to the ready queue
   enqueue(event);
@@ -252,6 +258,10 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
   }
 }
 
+/*
+* Method to remove a process from the CPU
+* depending upon clock time and values for the individual process
+*/
 void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextSwitch, struct Statistics *stats) {
   // clock is equal to the time stamp (i.e priority) from the process being removed
   // from the event queue
@@ -391,8 +401,6 @@ struct Process* generateRandomValues(int processType, struct Process* process) {
       printf("process IO Service Time: %d\n", process -> IO_Service);
 
       process -> cpu_service_time_remaining = process -> cpu_service_time;
-
-
       return process;
 
     // interactive
