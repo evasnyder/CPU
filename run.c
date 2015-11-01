@@ -119,6 +119,9 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   printf("average length event queue %d\n", stats -> avg_len_event_queue);
   stats -> avg_len_ready_queue = (stats -> total_ready_queue_lengths) / (float)(stats -> num_ready_queue_changed);
   printf("average length ready queue %d\n", stats -> avg_len_ready_queue);
+  printf("number of batch processes completed: %d\n", avgBatchValues -> numCompleted);
+  printf("number of interactive processes completed: %d\n", avgInteractiveValues -> numCompleted);
+  
 
 }
 
