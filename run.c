@@ -62,7 +62,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
   // while there is still runtime left in the CPU
   while (clock_time <= runtime) {
-    printf("IN WHILE LOOP*******************************\n");
+    // printf("IN WHILE LOOP*******************************\n");
     printf("CLOCK TIME: %d\n", clock_time);
 
     if(clock_time > runtime) {
@@ -104,6 +104,8 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
           removeProcess(event -> type, event, cpu_array, contextSwitch, stats);
           ++(stats -> num_events_processed);
         }
+      } else {
+        break;
       }
   }
 
@@ -126,10 +128,10 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   printf ("NUMMMMMMMMMM CPUSSSSSSS: %d\n", numCPUS);
   for (i = 0; i < numCPUS; ++i) {
     printf("context switch: %d\n", cpu_array[i].context_switch_time);
-    
+
   }
-  
-  
+
+
 
 }
 
@@ -137,7 +139,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
 void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats, int process_type) {
   printf("Create a New Process...\n");
- 
+
   // create a new Process
   struct Process *newProcess = (struct Process*)malloc(sizeof(struct Process));
   // create a new Event
@@ -183,7 +185,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
   int i;
   for (i = 0; i < numCPUs; i++) {
     if (CPUs[i].idle == 0) {
-      printf("CPUs are idleeeeeeeeee: %d\n", contextSwitch);
+      printf("CPUs are idlee eeeeeeee: %d\n", contextSwitch);
       struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
       struct Process* tempProcess = (struct Process*)malloc(sizeof(struct Process));
       tempProcess = event -> process;
@@ -236,7 +238,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         newEvent -> timeStamp = clock_time + quantum + contextSwitch;
         newEvent -> type = 6;
         tempProcess -> CPU_running_on = i;
-        newEvent -> process -> cpu_service_time_remaining = (event -> process -> cpu_service_time_remaining) + quantum + contextSwitch;
+        newEvent -> process -> cpu_service_time_remaining = (event -> process -> cpu_service_time_remaining) - (quantum + contextSwitch);
         // put onto the event queue
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
@@ -253,7 +255,7 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
   // from the event queue
   printf("remiving a process %d\n", type);
   struct Event* newEvent;
-  switch(type) {
+  switch(event -> type) {
     printf("inside switch\n");
     // terminate
     case 4:
@@ -262,6 +264,7 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
           printf("terminating a process \n");
           // batch process
           avgBatchValues -> numCompleted = avgBatchValues -> numCompleted + 1;
+          printf("COMPETING A BATCH PROCESSSSSSSSSSSSSSSSSSSSS %d\n", avgBatchValues -> numCompleted);
           // if the process that just finished was running for the longest time
           if (clock_time - (event -> process -> start_time) > avgBatchValues -> longestProcessTime) {
             avgBatchValues -> longestProcessTime = (clock_time - (event->process->start_time));

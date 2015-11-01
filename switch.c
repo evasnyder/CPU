@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
                 printf("%s\n",  "f : enter input filen name\nc : enter number of CPUs\nq : enter quantum\nt : enter simulation stop time\nw : context switch cost\nn : disable I/O faults\nv : enable verbose output\nb : disable parseable batch output\nh : display help message");
 
                  break;
-             
+
              default: print_usage();
                  exit(EXIT_FAILURE);
         }
@@ -88,10 +88,10 @@ int main(int argc, char *argv[]) {
      char value[10];
      int n1, n2, n3, n4;
 
-    
+
 
     char lines[MAXLINES][BUFSIZ];
-     
+
     //save the contents of the file in an array
     while (i < MAXLINES && fgets(lines[i], sizeof(lines[0]), fp))
     {
@@ -116,15 +116,14 @@ int main(int argc, char *argv[]) {
         printf("%s\n", "it's a batch, guys :')");
         processTypeInt = 1;
     }
-    
-    // printf("%d\n CPU TIME: %d\n%d\n%d\n%d\n", processTypeInt, avgCPUTime, 
+
+    // printf("%d\n CPU TIME: %d\n%d\n%d\n%d\n", processTypeInt, avgCPUTime,
     //     avgBurstTime, avgInterArrivalTime, avgIOTime);
 
     saveAvgValue(processTypeInt, avgCPUTime, avgBurstTime, avgInterArrivalTime, avgIOTime);
     runCPU(stopTime, numCPU, contextSwitch, quantum); 
-    
+
 }
 
     return 0;
 }
-
