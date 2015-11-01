@@ -73,11 +73,9 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
     // if there are events in the queue...
       // DEQUEUE an event from the event queue
       if(isEmptyPQ() == 0) {
-        printf("queue is not empty\n");
       //  struct Event *event = deletePQ();
         struct Event *event = malloc(sizeof(struct Event));
         event -> type = 0;
-        printf("eh: %d\n", event->type);
         event = deletePQ();
         if(event -> type == NULL) {
           printf("event is null\n");
@@ -105,6 +103,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
           ++(stats -> num_events_processed);
         }
       } else {
+        printf("Event Queue is empty! No more processes to exectue\n");
         break;
       }
   }
@@ -136,7 +135,10 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 }
 
 
-
+/*
+* Method to create a new process and add it to the ready queue as well as creating
+* and event to put another process onto the event queue.
+*/
 void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats, int process_type) {
   printf("Create a New Process...\n");
 
@@ -151,14 +153,14 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
   printf("still going...\n");
 
   struct Event* interarrivalProcessTime = (struct Event*)malloc(sizeof(struct Event));
-
-  interarrivalProcessTime -> timeStamp = clock_time + newProcess -> interarrival_time;
+  printf("new process interarrival time!!!! %d\n", newProcess -> interarrival_time);
+  interarrivalProcessTime -> timeStamp = clock_time + (newProcess -> interarrival_time);
   printf("interarrival process time %d\n", interarrivalProcessTime -> timeStamp);
   interarrivalProcessTime -> type = 1;
   printf("interarrival type %d\n", interarrivalProcessTime -> type);
   interarrivalProcessTime -> process_type = process_type;
   printf("interarrivel process type %d\n", interarrivalProcessTime -> process_type);
-  enqueue(interarrivalProcessTime);
+  add(interarrivalProcessTime);
   stats -> total_ready_queue_lengths= (stats -> total_ready_queue_lengths) + sizeQ();
         stats -> num_ready_queue_changed = (stats -> num_ready_queue_changed) + 1;
   printf("woohoo still working...\n");
@@ -269,6 +271,7 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
           if (clock_time - (event -> process -> start_time) > avgBatchValues -> longestProcessTime) {
             avgBatchValues -> longestProcessTime = (clock_time - (event->process->start_time));
           }
+          createNewProcess(event, clock_time, stats, 1);
           break;
         case 2:
           // batch process
@@ -276,6 +279,7 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
           if (clock_time - (event -> process -> start_time) > avgInteractiveValues -> longestProcessTime) {
             avgInteractiveValues -> longestProcessTime = (clock_time - (event->process->start_time));
           }
+          createNewProcess(event, clock_time, stats, 2);
           break;
       }
 
@@ -328,21 +332,15 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
 
 //method to save processes data from the input file
 void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArrival, int avgIO) {
-  printf("Saving Average Values! \n");
   avgBatchValues = (struct batch*)malloc(sizeof(struct batch));
   avgInteractiveValues = (struct interactive*)malloc(sizeof(struct interactive));
   struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
 
   switch (process_type) {
     case 1:
-      printf("Hey I'm a batch....\n");
       newEvent -> type = 1;
       newEvent -> process_type = 1;
-      printf("adding new event from save avg values\n");
-      printf("newEvent type before adding it: %d\n", newEvent -> type);
       add(newEvent);
-      printPQ();
-      // batch
       avgBatchValues -> cpuTime = avgCPU;
       avgBatchValues -> burstTime = avgBurst;
       avgBatchValues -> interArrTime = avgInterArrival;
@@ -356,7 +354,6 @@ void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArriva
     case 2:
       newEvent -> type = 1;
       newEvent -> process_type = 2;
-      // interactive
       avgInteractiveValues -> cpuTime = avgCPU;
       avgInteractiveValues -> burstTime = avgBurst;
       avgInteractiveValues -> interArrTime = avgInterArrival;
@@ -372,8 +369,8 @@ void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArriva
 
 /**
 * Method to generate the random numbers for the process being created
-* 1 =
-* 2 =
+* 1 = is for a batch process
+* 2 = is for an interactive process
 */
 struct Process* generateRandomValues(int processType, struct Process* process) {
 
