@@ -122,6 +122,13 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   printf("average length ready queue %d\n", stats -> avg_len_ready_queue);
   printf("number of batch processes completed: %d\n", avgBatchValues -> numCompleted);
   printf("number of interactive processes completed: %d\n", avgInteractiveValues -> numCompleted);
+
+  printf ("NUMMMMMMMMMM CPUSSSSSSS: %d\n", numCPUS);
+  for (i = 0; i < 2; ++i) {
+    printf("context switch: %d\n", cpu_array[i].context_switch_time);
+    
+  }
+  
   
 
 }
@@ -384,6 +391,7 @@ struct Process* generateRandomValues(int processType, struct Process* process) {
       printf("process IO Service Time: %d\n", process -> IO_Service);
 
       process -> cpu_service_time_remaining = process -> cpu_service_time;
+
 
       return process;
 
