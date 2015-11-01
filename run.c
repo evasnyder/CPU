@@ -19,6 +19,10 @@ void initializeCPUS(struct CPU *cpu) {
   //return cpu;
 }
 
+/*
+* Method to run the CPU scheduler!
+* Calls all of the necessary methods to make our CPU scheduler work.
+*/
 void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
   printf("ENTERING RUN \n");
@@ -26,8 +30,6 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   printf("numCPUS %d\n", numCPUS);
   printf("contextSwitch %d\n", contextSwitch);
   printf("quantum %d\n", quantum);
-
-  int beginning = 1;
 
   struct Statistics* stats = (struct Statistics*)malloc(sizeof(struct Statistics));
   stats -> len_simulation_time = 0;
@@ -63,10 +65,14 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
   // while there is still runtime left in the CPU
   while (clock_time <= runtime) {
+<<<<<<< HEAD
 
 
 
     printf("IN WHILE LOOP*******************************\n");
+=======
+    // printf("IN WHILE LOOP*******************************\n");
+>>>>>>> origin/master
     printf("CLOCK TIME: %d\n", clock_time);
 
     if(clock_time > runtime) {
@@ -77,11 +83,9 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
     // if there are events in the queue...
       // DEQUEUE an event from the event queue
       if(isEmptyPQ() == 0) {
-        printf("queue is not empty\n");
       //  struct Event *event = deletePQ();
         struct Event *event = malloc(sizeof(struct Event));
         event -> type = 0;
-        printf("eh: %d\n", event->type);
         event = deletePQ();
         if(event -> type == NULL) {
           printf("event is null\n");
@@ -108,6 +112,9 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
           removeProcess(event -> type, event, cpu_array, contextSwitch, stats);
           ++(stats -> num_events_processed);
         }
+      } else {
+        printf("Event Queue is empty! No more processes to exectue\n");
+        break;
       }
   }
 
@@ -130,18 +137,21 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   printf ("NUMMMMMMMMMM CPUSSSSSSS: %d\n", numCPUS);
   for (i = 0; i < numCPUS; ++i) {
     printf("context switch: %d\n", cpu_array[i].context_switch_time);
-    
+
   }
-  
-  
+
+
 
 }
 
 
-
+/*
+* Method to create a new process and add it to the ready queue as well as creating
+* and event to put another process onto the event queue.
+*/
 void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats, int process_type) {
   printf("Create a New Process...\n");
- 
+
   // create a new Process
   struct Process *newProcess = (struct Process*)malloc(sizeof(struct Process));
   // create a new Event
@@ -153,14 +163,14 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
   printf("still going...\n");
 
   struct Event* interarrivalProcessTime = (struct Event*)malloc(sizeof(struct Event));
-
-  interarrivalProcessTime -> timeStamp = clock_time + newProcess -> interarrival_time;
+  printf("new process interarrival time!!!! %d\n", newProcess -> interarrival_time);
+  interarrivalProcessTime -> timeStamp = clock_time + (newProcess -> interarrival_time);
   printf("interarrival process time %d\n", interarrivalProcessTime -> timeStamp);
   interarrivalProcessTime -> type = 1;
   printf("interarrival type %d\n", interarrivalProcessTime -> type);
   interarrivalProcessTime -> process_type = process_type;
   printf("interarrivel process type %d\n", interarrivalProcessTime -> process_type);
-  enqueue(interarrivalProcessTime);
+  add(interarrivalProcessTime);
   stats -> total_ready_queue_lengths= (stats -> total_ready_queue_lengths) + sizeQ();
         stats -> num_ready_queue_changed = (stats -> num_ready_queue_changed) + 1;
   printf("woohoo still working...\n");
@@ -177,6 +187,10 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
   stats -> num_event_queue_changed = (stats -> num_event_queue_changed) + 1;
 }
 
+/*
+* Method which decides if it's possible to put a process on the CPU and if so, does
+* and then generates an event to later remove it and free the CPU again
+*/
 void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs, int numCPUs, int quantum, struct Statistics *stats) {
   // add the new event to the ready queue
   enqueue(event);
@@ -187,7 +201,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
   int i;
   for (i = 0; i < numCPUs; i++) {
     if (CPUs[i].idle == 0) {
-      printf("CPUs are idleeeeeeeeee: %d\n", contextSwitch);
+      printf("CPUs are idlee eeeeeeee: %d\n", contextSwitch);
       struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
       struct Process* tempProcess = (struct Process*)malloc(sizeof(struct Process));
       tempProcess = event -> process;
@@ -240,7 +254,7 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
         newEvent -> timeStamp = clock_time + quantum + contextSwitch;
         newEvent -> type = 6;
         tempProcess -> CPU_running_on = i;
-        newEvent -> process -> cpu_service_time_remaining = (event -> process -> cpu_service_time_remaining) + quantum + contextSwitch;
+        newEvent -> process -> cpu_service_time_remaining = (event -> process -> cpu_service_time_remaining) - (quantum + contextSwitch);
         // put onto the event queue
         add(newEvent);
         stats -> total_event_queue_lengths = (stats -> total_event_queue_lengths) + sizePQ();
@@ -252,12 +266,16 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
   }
 }
 
+/*
+* Method to remove a process from the CPU
+* depending upon clock time and values for the individual process
+*/
 void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextSwitch, struct Statistics *stats) {
   // clock is equal to the time stamp (i.e priority) from the process being removed
   // from the event queue
   printf("remiving a process %d\n", type);
   struct Event* newEvent;
-  switch(type) {
+  switch(event -> type) {
     printf("inside switch\n");
     // terminate
     case 4:
@@ -266,10 +284,12 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
           printf("terminating a process \n");
           // batch process
           avgBatchValues -> numCompleted = avgBatchValues -> numCompleted + 1;
+          printf("COMPETING A BATCH PROCESSSSSSSSSSSSSSSSSSSSS %d\n", avgBatchValues -> numCompleted);
           // if the process that just finished was running for the longest time
           if (clock_time - (event -> process -> start_time) > avgBatchValues -> longestProcessTime) {
             avgBatchValues -> longestProcessTime = (clock_time - (event->process->start_time));
           }
+          createNewProcess(event, clock_time, stats, 1);
           break;
         case 2:
           // batch process
@@ -277,6 +297,7 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
           if (clock_time - (event -> process -> start_time) > avgInteractiveValues -> longestProcessTime) {
             avgInteractiveValues -> longestProcessTime = (clock_time - (event->process->start_time));
           }
+          createNewProcess(event, clock_time, stats, 2);
           break;
       }
 
@@ -329,7 +350,6 @@ void removeProcess(int type, struct Event *event, struct CPU *CPUs, int contextS
 
 //method to save processes data from the input file
 void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArrival, int avgIO) {
-  printf("Saving Average Values! \n");
   avgBatchValues = (struct batch*)malloc(sizeof(struct batch));
   avgInteractiveValues = (struct interactive*)malloc(sizeof(struct interactive));
   struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
@@ -337,14 +357,9 @@ void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArriva
   printf("PROCESSSSSSSSSSSSSSSSSS TYPE:%d\n", process_type);
   switch (process_type) {
     case 1:
-      printf("Hey I'm a batch....\n");
       newEvent -> type = 1;
       newEvent -> process_type = 1;
-      printf("adding new event from save avg values\n");
-      printf("newEvent type before adding it: %d\n", newEvent -> type);
       add(newEvent);
-      printPQ();
-      // batch
       avgBatchValues -> cpuTime = avgCPU;
       avgBatchValues -> burstTime = avgBurst;
       avgBatchValues -> interArrTime = avgInterArrival;
@@ -359,9 +374,12 @@ void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArriva
       printf("i'm different yah im different\n");
       newEvent -> type = 1;
       newEvent -> process_type = 2;
+<<<<<<< HEAD
       // interactive
       add(newEvent);
       printPQ();
+=======
+>>>>>>> origin/master
       avgInteractiveValues -> cpuTime = avgCPU;
       avgInteractiveValues -> burstTime = avgBurst;
       avgInteractiveValues -> interArrTime = avgInterArrival;
@@ -378,8 +396,8 @@ void saveAvgValue(int process_type, int avgCPU, int avgBurst, int avgInterArriva
 
 /**
 * Method to generate the random numbers for the process being created
-* 1 =
-* 2 =
+* 1 = is for a batch process
+* 2 = is for an interactive process
 */
 struct Process* generateRandomValues(int processType, struct Process* process) {
 
@@ -400,8 +418,6 @@ struct Process* generateRandomValues(int processType, struct Process* process) {
       printf("process IO Service Time: %d\n", process -> IO_Service);
 
       process -> cpu_service_time_remaining = process -> cpu_service_time;
-
-
       return process;
 
     // interactive
