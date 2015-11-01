@@ -67,6 +67,18 @@ int main(int argc, char *argv[]) {
               case 'b' : //display parsaeble batch output
                  break;
               case 'h' : //display help message
+                printf("%d\n",  " a : find all matching entries
+                                  c : do not use cat file
+                                  d : print gobs of debugging information
+                                  D : as for -d, but also display the pages
+                                  f : same as whatis(1)
+                                  h : print this help message
+                                  k : same as apropos(1)
+                                  K : search for a string in all pages
+                                  t : use troff to format pages for printing
+                                  w : print location of man page(s) that would be displayed
+                                      (if no name given: print directories that would be searched)
+                                  W : as for -w, but display filenames only")
 
                  break;
              default: print_usage();

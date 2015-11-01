@@ -55,6 +55,7 @@ struct CPU {
 
 struct Statistics {
   int len_simulation_time;
+  int num_events_processed;
   int num_processes_complete;
   int final_len_event_queue;
   int avg_len_event_queue;

@@ -9,6 +9,7 @@ struct batch* avgBatchValues;
 struct interactive* avgInteractiveValues;
 
 
+
 //one cannot return array in C, only a pointer to the array
 void initializeCPUS(struct CPU *cpu) {
   //struct CPU cpu;
@@ -41,6 +42,8 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   stats -> total_ready_queue_lengths = 0;
   stats -> num_ready_queue_changed = 0;
 
+  stats -> num_events_processed = 0;
+
   printf("made stats\n");
 
   // create an array of structs for the CPUS
@@ -50,10 +53,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   for ( i = 0; i < numCPUS; ++i)
   {
     printf("initializing CPU\n");
-     //cpu_array[i] = *(struct CPU*)malloc(sizeof(struct CPU));
-     //cpu_array->idle = 0;
     initializeCPUS(&cpu_array[i]);
-    //  printf( "r[%d] = %d\n", i, cpu_array[i]);
 
   }
 
@@ -68,7 +68,6 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
       printf("******************* DONE BITCHESSSSS ****************** \n");
       break;
     }
-    // printf("In the while loop \n");
 
     // if there are events in the queue...
       // DEQUEUE an event from the event queue
@@ -94,12 +93,15 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
           printf("event process type: %d\n", event -> process_type);
           // create a new process
           createNewProcess(event, clock_time, stats, event -> process_type);
+           ++(stats -> num_events_processed);
         } else if (event -> type == 2) {
           printf("event type is to make a decision\n");
           schedulingDecision(event, contextSwitch, cpu_array, numCPUS, quantum, stats);
+          ++(stats -> num_events_processed);
         } else if (event -> type == 4 || event -> type == 5 || event -> type == 6) {
           printf("event type is to remove something from the CPU\n");
           removeProcess(event -> type, event, cpu_array, contextSwitch, stats);
+          ++(stats -> num_events_processed);
         }
       }
   }
@@ -108,6 +110,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
   stats -> len_simulation_time = clock_time;
   printf("length of simulation time: %d\n", stats -> len_simulation_time);
+   printf("number of events processed: %d\n", stats -> num_events_processed);
   stats -> final_len_event_queue = sizePQ();
   printf("final event queue length %d\n", stats -> final_len_event_queue);
   stats -> final_len_ready_queue = sizeQ();
@@ -123,6 +126,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
 
 void createNewProcess(struct Event *event, int timeStamp, struct Statistics *stats, int process_type) {
   printf("Create a New Process...\n");
+ 
   // create a new Process
   struct Process *newProcess = (struct Process*)malloc(sizeof(struct Process));
   // create a new Event
@@ -142,6 +146,8 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
   interarrivalProcessTime -> process_type = process_type;
   printf("interarrivel process type %d\n", interarrivalProcessTime -> process_type);
   enqueue(interarrivalProcessTime);
+  stats -> total_ready_queue_lengths= (stats -> total_ready_queue_lengths) + sizeQ();
+        stats -> num_ready_queue_changed = (stats -> num_ready_queue_changed) + 1;
   printf("woohoo still working...\n");
   free(event);
 
@@ -159,18 +165,19 @@ void createNewProcess(struct Event *event, int timeStamp, struct Statistics *sta
 void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs, int numCPUs, int quantum, struct Statistics *stats) {
   // add the new event to the ready queue
   enqueue(event);
+  stats -> total_ready_queue_lengths= (stats -> total_ready_queue_lengths) + sizeQ();
+        stats -> num_ready_queue_changed = (stats -> num_ready_queue_changed) + 1;
 
   // check to see if any CPUs are idle
   int i;
   for (i = 0; i < numCPUs; i++) {
     if (CPUs[i].idle == 0) {
-      printf("CPUs are idleeeeeeeeee\n");
+      printf("CPUs are idleeeeeeeeee: %d\n", contextSwitch);
       struct Event* newEvent = (struct Event*)malloc(sizeof(struct Event));
       struct Process* tempProcess = (struct Process*)malloc(sizeof(struct Process));
       tempProcess = event -> process;
       newEvent -> process = tempProcess;
       newEvent -> process -> cpu_service_time_remaining = event -> process -> cpu_service_time_remaining;
-
       // if the CPU is free - put a process on it ==> ROUND ROBIN HERE TO KNOW WHICH ONE
 
       // mark the CPU as full
