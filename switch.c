@@ -21,7 +21,8 @@ int main(int argc, char *argv[]) {
     int processTypeInt;
     int numCPU;
     int contextSwitch;
-    enum { MAXLINES = 30 };
+    enum { MAXLINES = 100 };
+    int size = 100;
     char* avgCPUTime;
     int avgBurstTime;
     int avgInterArrivalTime;
@@ -90,7 +91,7 @@ int main(int argc, char *argv[]) {
 
     
 
-    char lines[MAXLINES][BUFSIZ];
+    char lines[MAXLINES][size];
      
     //save the contents of the file in an array
     while (i < MAXLINES && fgets(lines[i], sizeof(lines[0]), fp))
@@ -98,14 +99,25 @@ int main(int argc, char *argv[]) {
         lines[i][strlen(lines[i])] = '\0';
         i = i + 1;
     }
+    printf("IIIIIII%d\n", i);
 
     //close file after reading it
     fclose(fp);
 
     //srand(time(0));
     int k = (j+1) % i;
-    numProcesses = atoi(lines[0]);
-    processType = strtok(lines[2], " ");
+    int hello = i; 
+
+numProcesses = atoi(lines[0]);
+    for (int m = 1; m < i; ++m)
+    {
+
+        printf("IIIIIII%d\n", i);
+    //save the 
+    printf("MMMMMM%d\n", m);
+    int hello = m;
+
+    processType = strtok(lines[m], " ");
     avgCPUTime = atoi(strtok(NULL, " "));
     avgBurstTime = atoi(strtok(NULL, " "));
     avgInterArrivalTime = atoi(strtok(NULL, " "));
@@ -116,14 +128,26 @@ int main(int argc, char *argv[]) {
         printf("%s\n", "it's a batch, guys :')");
         processTypeInt = 1;
     }
+
+    else if (strcmp(processType, "interactive") == 0)
+    {
+        printf("%s\n", "it's a batch, guys :')");
+        processTypeInt = 2;
+    }
+
+
+    printf("%s\n", processType);
     
-    // printf("%d\n CPU TIME: %d\n%d\n%d\n%d\n", processTypeInt, avgCPUTime, 
-    //     avgBurstTime, avgInterArrivalTime, avgIOTime);
+    printf("%d\n CPU TIME: %d\n%d\n%d\n%d\n", processTypeInt, avgCPUTime, 
+        avgBurstTime, avgInterArrivalTime, avgIOTime);
 
     saveAvgValue(processTypeInt, avgCPUTime, avgBurstTime, avgInterArrivalTime, avgIOTime);
     runCPU(stopTime, numCPU, contextSwitch, quantum); 
+}
     
 }
+
+//timestamp - interarrival
 
     return 0;
 }
