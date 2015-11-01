@@ -124,7 +124,7 @@ void runCPU(int runtime, int numCPUS, int contextSwitch, int quantum) {
   printf("number of interactive processes completed: %d\n", avgInteractiveValues -> numCompleted);
 
   printf ("NUMMMMMMMMMM CPUSSSSSSS: %d\n", numCPUS);
-  for (i = 0; i < 2; ++i) {
+  for (i = 0; i < numCPUS; ++i) {
     printf("context switch: %d\n", cpu_array[i].context_switch_time);
     
   }
