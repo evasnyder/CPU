@@ -15,6 +15,7 @@ void initializeCPUS(struct CPU *cpu) {
   //struct CPU cpu;
   cpu = (struct CPU*)malloc(sizeof(struct CPU));
   cpu -> idle = 0;
+  cpu -> context_switch_time = 0;
   //return cpu;
 }
 
@@ -185,6 +186,8 @@ void schedulingDecision(struct Event *event, int contextSwitch, struct CPU *CPUs
 
       // mark the CPU as full
       CPUs[i].idle = 1;
+      CPUs[i].context_switch_time = CPUs[i].context_switch_time + contextSwitch;
+      printf("CPU CONTEXXXXXXXXXXXXXXXT SWITCH%d\n", CPUs[i].context_switch_time);
 
       printf("Event CPU Service Time Remaining %d\n", event -> process -> cpu_service_time_remaining);
       printf("Event Burst Time %d\n", event -> process -> burst_time);
