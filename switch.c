@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
               case 'b' : //display parsaeble batch output
                  break;
               case 'h' : //display help message
-                printf("%d\n",  "f : enter input filen name\nc : enter number of CPUs\nq : enter quantum");
+                printf("%s\n",  "f : enter input filen name\nc : enter number of CPUs\nq : enter quantum\nt : enter simulation stop time\nw : context switch cost\nn : disable I/O faults\nv : enable verbose output\nb : disable parseable batch output\nh : display help message");
 
                  break;
              
@@ -77,10 +77,13 @@ int main(int argc, char *argv[]) {
     }
 
 
-     printf("Input file: %s\n",fileName);
-     printf("number of CPUs: %d\n",numCPU);
-     printf("Quantum: %d\n",quantum);
-     printf("Stop Time: %d\n",stopTime);
+     // printf("Input file: %s\n",fileName);
+     // printf("number of CPUs: %d\n",numCPU);
+     // printf("Quantum: %d\n",quantum);
+     // printf("Stop Time: %d\n",stopTime);
+
+     if (fileName != NULL){
+
 
      int i, j;
     fp = fopen(fileName, "r");
@@ -122,7 +125,7 @@ char lines[MAXLINES][BUFSIZ];
     saveAvgValue(processTypeInt, avgCPUTime, avgBurstTime, avgInterArrivalTime, avgIOTime);
     runCPU(stopTime, numCPU, contextSwitch, quantum); 
     
-
+}
 
     return 0;
 }
