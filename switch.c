@@ -77,11 +77,6 @@ int main(int argc, char *argv[]) {
     }
 
 
-     // printf("Input file: %s\n",fileName);
-     // printf("number of CPUs: %d\n",numCPU);
-     // printf("Quantum: %d\n",quantum);
-     // printf("Stop Time: %d\n",stopTime);
-
      if (fileName != NULL){
 
 
@@ -95,16 +90,19 @@ int main(int argc, char *argv[]) {
 
     
 
-char lines[MAXLINES][BUFSIZ];
+    char lines[MAXLINES][BUFSIZ];
      
+    //save the contents of the file in an array
     while (i < MAXLINES && fgets(lines[i], sizeof(lines[0]), fp))
     {
         lines[i][strlen(lines[i])] = '\0';
         i = i + 1;
     }
+
+    //close file after reading it
     fclose(fp);
-    printf("%d\n", i);
-    srand(time(0));
+
+    //srand(time(0));
     int k = (j+1) % i;
     numProcesses = atoi(lines[0]);
     processType = strtok(lines[2], " ");
@@ -118,9 +116,9 @@ char lines[MAXLINES][BUFSIZ];
         printf("%s\n", "it's a batch, guys :')");
         processTypeInt = 1;
     }
-    //strcpy(avgCPUTime, strtok(NULL, " "));
-    printf("%d\n CPU TIME: %d\n%d\n%d\n%d\n", processTypeInt, avgCPUTime, 
-        avgBurstTime, avgInterArrivalTime, avgIOTime);
+    
+    // printf("%d\n CPU TIME: %d\n%d\n%d\n%d\n", processTypeInt, avgCPUTime, 
+    //     avgBurstTime, avgInterArrivalTime, avgIOTime);
 
     saveAvgValue(processTypeInt, avgCPUTime, avgBurstTime, avgInterArrivalTime, avgIOTime);
     runCPU(stopTime, numCPU, contextSwitch, quantum); 
